@@ -67,6 +67,16 @@ std::istream& operator>>(std::istream& is, fraction& f)
 	return is;
 }
 
+fraction::operator double()
+{
+	return (double)c / d;
+}
+
+fraction::operator float()
+{
+	return (float)c / d;
+}
+
 int fraction::get_counter()
 {
 	return c;

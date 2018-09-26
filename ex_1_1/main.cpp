@@ -23,6 +23,8 @@ void static_test()
 	cout << f << " == " << g << " = " << (f == g) << endl;
 	cout << f << " != " << g << " = " << (f != g) << endl;
 	cout << f << " == " << f << " = " << (f == f) << endl;
+
+	cout << f << " = " << (double)f << endl;
 }
 
 void interactive_test()
