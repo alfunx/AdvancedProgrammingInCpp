@@ -16,15 +16,20 @@ int lcm(int a, int b)
 	return (a * b) / gcf(a, b);
 }
 
-inline void check_char(std::istream& is, char ch)
+inline bool check_char(std::istream& is, char ch, bool badbit = true)
 {
 	char c;
 	is >> c;
 
 	if (c != ch) {
 		is.putback(c);
-		is.setstate(std::ios::badbit);
+
+		if (badbit)
+			is.setstate(std::ios::badbit);
+
+		return false;
 	}
+	return true;
 }
 
 std::ostream& operator<<(std::ostream& os, fraction f)
@@ -36,10 +41,24 @@ std::ostream& operator<<(std::ostream& os, fraction f)
 std::istream& operator>>(std::istream& is, fraction& f)
 {
 	fraction g;
-	check_char(is, '(');
-	is >> g.c;
-	check_char(is, '/');
-	is >> g.d;
+
+	if (check_char(is, '(', false)) {
+		is >> g.c;
+	} else {
+		is >> g.c;
+		if (is)
+			f = g;
+		return is;
+	}
+
+	if (check_char(is, '/', false)) {
+		is >> g.d;
+	} else if (check_char(is, ')')) {
+		if (is)
+			f = g;
+		return is;
+	}
+
 	check_char(is, ')');
 
 	if (is)
