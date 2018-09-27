@@ -3,7 +3,7 @@
 
 fraction::fraction(int cnt, int dnm) : c(cnt), d(dnm)
 {
-	if (c % d == 0) {
+	if (0 == c % d) {
 		c = c / d;
 		d = 1;
 	}
@@ -11,7 +11,7 @@ fraction::fraction(int cnt, int dnm) : c(cnt), d(dnm)
 
 int gcf(int a, int b)
 {
-	return b == 0 ? a : gcf(b, a % b);
+	return 0 == b ? a : gcf(b, a % b);
 }
 
 int lcm(int a, int b)
