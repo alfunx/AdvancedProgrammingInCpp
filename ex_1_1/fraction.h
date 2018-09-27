@@ -33,6 +33,10 @@ public:
 	fraction operator/(int i);
 	bool operator==(fraction f);
 	bool operator!=(fraction f);
+	bool operator<(fraction f);
+	bool operator>(fraction f);
+	const bool operator<(fraction f) const;
+	const bool operator>(fraction f) const;
 
 };
 
