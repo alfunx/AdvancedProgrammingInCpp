@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+g++ -o main main.cpp rpn_calculator.cpp
