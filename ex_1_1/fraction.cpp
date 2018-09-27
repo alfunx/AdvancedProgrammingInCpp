@@ -3,7 +3,10 @@
 
 fraction::fraction(int cnt, int dnm) : c(cnt), d(dnm)
 {
-	/* void */
+	if (c % d == 0) {
+		c = c / d;
+		d = 1;
+	}
 }
 
 int gcf(int a, int b)
@@ -40,29 +43,29 @@ std::ostream& operator<<(std::ostream& os, fraction f)
 
 std::istream& operator>>(std::istream& is, fraction& f)
 {
-	fraction g;
+	int cnt, dnm;
 
 	if (check_char(is, '(', false)) {
-		is >> g.c;
+		is >> cnt;
 	} else {
-		is >> g.c;
+		is >> cnt;
 		if (is)
-			f = g;
+			f = fraction(cnt);
 		return is;
 	}
 
 	if (check_char(is, '/', false)) {
-		is >> g.d;
+		is >> dnm;
 	} else if (check_char(is, ')')) {
 		if (is)
-			f = g;
+			f = fraction(cnt);
 		return is;
 	}
 
 	check_char(is, ')');
 
 	if (is)
-		f = g;
+		f = fraction(cnt, dnm);
 
 	return is;
 }
