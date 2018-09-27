@@ -33,7 +33,7 @@ void interactive_test()
 		<< "Example usage: (1/3) + (2/4)" << endl << endl;
 
 	string s;
-	while (true) {
+	for (;;) {
 		fraction f, g;
 		string op;
 

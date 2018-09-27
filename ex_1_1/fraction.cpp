@@ -89,36 +89,34 @@ int fraction::get_denominator()
 
 fraction fraction::operator+(fraction f)
 {
-	int dnm = lcm(d, f.get_denominator());
-	int cnt = c * dnm / d + f.get_counter() * dnm / f.get_denominator();
+	int dnm = lcm(d, f.d);
+	int cnt = c * dnm / d + f.c * dnm / f.d;
 
 	return fraction(cnt, dnm);
 }
 
 fraction fraction::operator-(fraction f)
 {
-	int dnm = lcm(d, f.get_denominator());
-	int cnt = c * dnm / d + -f.get_counter() * dnm / f.get_denominator();
+	int dnm = lcm(d, f.d);
+	int cnt = c * dnm / d - f.c * dnm / f.d;
 
 	return fraction(cnt, dnm);
 }
 
 fraction fraction::operator*(fraction f)
 {
-	int n = gcf(c, f.get_denominator());
-	int m = gcf(f.get_counter(), d);
+	int n = gcf(c, f.d);
+	int m = gcf(f.c, d);
 
-	return fraction((c / n) * (f.get_counter() / m),
-			(d / m * (f.get_denominator() / n)));
+	return fraction((c / n) * (f.c / m), (d / m * (f.d / n)));
 }
 
 fraction fraction::operator/(fraction f)
 {
-	int n = gcf(c, f.get_counter());
-	int m = gcf(f.get_denominator(), d);
+	int n = gcf(c, f.c);
+	int m = gcf(f.d, d);
 
-	return fraction((c / n) * (f.get_denominator() / m),
-			(d / m * (f.get_counter() / n)));
+	return fraction((c / n) * (f.d / m), (d / m * (f.c / n)));
 }
 
 fraction fraction::operator*(int i)
@@ -133,10 +131,10 @@ fraction fraction::operator/(int i)
 
 bool fraction::operator==(fraction f)
 {
-	return (double)c / f.get_counter() == (double)d / f.get_denominator();
+	return (double)c / f.c == (double)d / f.d;
 }
 
 bool fraction::operator!=(fraction f)
 {
-	return (double)c / f.get_counter() != (double)d / f.get_denominator();
+	return (double)c / f.c != (double)d / f.d;
 }
