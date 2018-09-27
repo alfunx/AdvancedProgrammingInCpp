@@ -1,6 +1,8 @@
 #ifndef FRACTION_H_
 #define FRACTION_H_
 
+#include <iostream>
+
 class fraction
 {
 

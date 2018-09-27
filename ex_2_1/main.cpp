@@ -1,8 +1,8 @@
+#include "rpn_calculator.h"
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-#include "rpn_calculator.h"
 using namespace std;
 
 void static_test()

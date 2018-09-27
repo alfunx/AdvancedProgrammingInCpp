@@ -1,7 +1,7 @@
+#include "rpn_calculator.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "rpn_calculator.h"
 
 rpn_calculator::rpn_calculator()
 {

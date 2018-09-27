@@ -1,8 +1,8 @@
+#include "fraction.h"
 #include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
-#include "fraction.h"
 using namespace std;
 
 void static_test()
@@ -32,7 +32,6 @@ void interactive_test()
 	cout << "Send SIGINT to quit." << endl
 		<< "Example usage: (1/3) + (2/4)" << endl << endl;
 
-	string s;
 	for (;;) {
 		fraction f, g;
 		string op;

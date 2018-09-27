@@ -1,5 +1,5 @@
-#include <iostream>
 #include "fraction.h"
+#include <iostream>
 
 fraction::fraction(int cnt, int dnm) : c(cnt), d(dnm)
 {
