@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-g++ -o main main.cpp rpn_calculator.cpp
+g++ -o main main.cpp rpn_calculator.cpp ../ex_1_1/fraction.cpp -I../ex_1_1

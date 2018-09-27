@@ -1,3 +1,4 @@
+#include "fraction.h"
 #include "rpn_calculator.h"
 #include <iostream>
 #include <sstream>
@@ -10,8 +11,8 @@ void static_test()
 	rpn_calculator rpn;
 
 	cout << ">>> n 1 n 2" << endl;
-	rpn.push(1.0);
-	rpn.push(2.0);
+	rpn.push(fraction(1));
+	rpn.push(fraction(2));
 	rpn.print();
 
 	cout << ">>> +" << endl;
@@ -35,6 +36,7 @@ inline void interactive_help()
 		<< "  s           --  swap first two [number]s on stack" << endl
 		<< "  r           --  reset stack" << endl
 		<< "  q           --  quit" << endl << endl
+		<< "Hint: You can use fractions as [number]s!" << endl << endl
 		<< "Example usage: n 3 n 2 n 1 + * n 3 /" << endl << endl;
 }
 
@@ -52,13 +54,13 @@ void interactive_test()
 		istringstream iss(input);
 
 		while (iss) {
-			double i;
+			fraction f;
 			string s;
 			iss >> s;
 
 			if ("n" == s) {
-				iss >> i;
-				rpn.push(i);
+				iss >> f;
+				rpn.push(f);
 			} else if ("+" == s)
 				rpn.add();
 			else if ("-" == s)

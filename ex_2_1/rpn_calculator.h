@@ -1,13 +1,14 @@
 #ifndef RPN_CALCULATOR_H_
 #define RPN_CALCULATOR_H_
 
+#include "fraction.h"
 #include <iostream>
 #include <vector>
 
 class rpn_calculator
 {
 
-	std::vector<double> stack;
+	std::vector<fraction> stack;
 
 	void check();
 
@@ -15,8 +16,8 @@ public:
 
 	rpn_calculator();
 
-	void push(double i);
-	double pop();
+	void push(fraction f);
+	fraction pop();
 	void reset();
 	void print();
 

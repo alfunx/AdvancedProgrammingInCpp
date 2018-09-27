@@ -1,3 +1,4 @@
+#include "fraction.h"
 #include "rpn_calculator.h"
 #include <iostream>
 #include <string>
@@ -13,16 +14,16 @@ inline void print_error(std::string s)
 	std::cout << "  [Error] " << s << std::endl;
 }
 
-void rpn_calculator::push(double i)
+void rpn_calculator::push(fraction f)
 {
-	stack.push_back(i);
+	stack.push_back(f);
 }
 
-double rpn_calculator::pop()
+fraction rpn_calculator::pop()
 {
-	double i = stack.back();
+	fraction f = stack.back();
 	stack.pop_back();
-	return i;
+	return f;
 }
 
 void rpn_calculator::reset()
@@ -32,8 +33,11 @@ void rpn_calculator::reset()
 
 void rpn_calculator::print()
 {
-	for (std::vector<double>::iterator it = stack.begin() ; it != stack.end(); ++it) {
-		std::cout << it - stack.begin() << ": " << *it << std::endl;;
+	for (std::vector<fraction>::iterator it = stack.begin() ; it != stack.end(); ++it) {
+		if (1 == (*it).get_denominator())
+			std::cout << it - stack.begin() << ": " << (*it).get_counter() << std::endl;
+		else
+			std::cout << it - stack.begin() << ": " << *it << std::endl;
 	}
 }
 
@@ -50,7 +54,7 @@ void rpn_calculator::sub()
 	if (stack.size() < 2)
 		return;
 
-	push(-pop() + pop());
+	push(pop() - pop());
 }
 
 void rpn_calculator::mul()
@@ -66,12 +70,12 @@ void rpn_calculator::div()
 	if (stack.size() < 2)
 		return;
 
-	if (0.0 == stack.back()) {
+	if (0 == stack.back().get_counter()) {
 		print_error("Division by 0!");
 		return;
 	}
 
-	push(1 / pop() * pop());
+	push(pop() / pop());
 }
 
 void rpn_calculator::min()
@@ -95,8 +99,8 @@ void rpn_calculator::swap()
 	if (stack.size() < 2)
 		return;
 
-	double i = pop();
-	double j = pop();
-	push(i);
-	push(j);
+	fraction f = pop();
+	fraction g = pop();
+	push(f);
+	push(g);
 }
