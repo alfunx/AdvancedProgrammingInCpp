@@ -33,7 +33,6 @@ inline void interactive_help()
 		<< "  max         --  perform operation on first two [number]s on stack" << endl
 		<< "  d           --  delete first [number] on stack" << endl
 		<< "  s           --  swap first two [number]s on stack" << endl
-		<< "  p           --  print stack" << endl
 		<< "  r           --  reset stack" << endl
 		<< "  q           --  quit" << endl << endl
 		<< "Hint: You can use fractions as [number]s!" << endl << endl
@@ -45,11 +44,12 @@ void interactive_test()
 	cout << "Enter 'q' to quit, enter 'h' for help." << endl << endl;
 
 	rpn_calculator rpn;
+	rpn.print();
 
 	for (;;) {
 		string input;
 
-		cout << ">>> ";
+		cout << endl << ">>> ";
 		getline(cin, input);
 		istringstream iss(input);
 
@@ -75,8 +75,6 @@ void interactive_test()
 				rpn.max();
 			else if ("d" == s)
 				rpn.pop();
-			else if ("p" == s)
-				rpn.print();
 			else if ("s" == s)
 				rpn.swap();
 			else if ("r" == s)

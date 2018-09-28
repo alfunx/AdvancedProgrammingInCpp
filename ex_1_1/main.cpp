@@ -64,6 +64,7 @@ void interactive_test()
 			cout << (f > g) << endl;
 		else
 			cout << "Unknown operator!" << endl;
+		cout << endl;
 	}
 }
 
