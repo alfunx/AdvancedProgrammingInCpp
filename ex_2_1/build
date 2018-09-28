@@ -1,2 +1,19 @@
 #!/usr/bin/env bash
-g++ -o main main.cpp rpn_calculator.cpp ../ex_1_1/fraction.cpp -I../ex_1_1
+
+binary_name='rpn'
+
+source_files=(
+    main.cpp
+    rpn_calculator.cpp
+    ../ex_1_1/fraction.cpp
+)
+
+header_files=(
+    -I ../ex_1_1
+    -I ../ex_2_2
+)
+
+g++ \
+    "${source_files[@]}" \
+    "${header_files[@]}" \
+    -o "$binary_name"

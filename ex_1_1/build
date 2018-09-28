@@ -1,2 +1,12 @@
 #!/usr/bin/env bash
-g++ -o main main.cpp fraction.cpp
+
+binary_name='fraction'
+
+source_files=(
+    main.cpp
+    fraction.cpp
+)
+
+g++ \
+    "${source_files[@]}" \
+    -o "$binary_name"

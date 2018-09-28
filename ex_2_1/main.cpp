@@ -32,8 +32,8 @@ inline void interactive_help()
 		<< "  min         --  perform operation on first two [number]s on stack" << endl
 		<< "  max         --  perform operation on first two [number]s on stack" << endl
 		<< "  d           --  delete first [number] on stack" << endl
-		<< "  p           --  print stack" << endl
 		<< "  s           --  swap first two [number]s on stack" << endl
+		<< "  p           --  print stack" << endl
 		<< "  r           --  reset stack" << endl
 		<< "  q           --  quit" << endl << endl
 		<< "Hint: You can use fractions as [number]s!" << endl << endl
@@ -94,7 +94,7 @@ void interactive_test()
 
 void print_help()
 {
-	cout << "usage: main [-s]" << endl;
+	cout << "usage: rpn [-s]" << endl;
 }
 
 int main(int argc, char** argv)
@@ -102,10 +102,13 @@ int main(int argc, char** argv)
 	vector<string> args(argv, argv + argc);
 
 	for (int i = 1; i < argc; i++) {
-		if ("-s" == args[i])
+		if ("-s" == args[i]) {
 			static_test();
-		else if ("-h" == args[i])
+			return 0;
+		} else if ("-h" == args[i]) {
 			print_help();
+			return 0;
+		}
 	}
 
 	interactive_test();

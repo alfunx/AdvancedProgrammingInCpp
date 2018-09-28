@@ -69,7 +69,7 @@ void interactive_test()
 
 void print_help()
 {
-	cout << "usage: main [-s] [-i]" << endl;
+	cout << "usage: fraction [-s] [-i]" << endl;
 }
 
 int main(int argc, char** argv)
