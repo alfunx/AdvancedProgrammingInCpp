@@ -1,10 +1,10 @@
 #include "fraction.h"
+#include "pvector.h"
 #include "rpn_calculator.h"
 #include <iostream>
 #include <string>
-#include <vector>
 
-rpn_calculator::rpn_calculator()
+rpn_calculator::rpn_calculator() : stack("rpn_stack.txt")
 {
 	/* void */
 }

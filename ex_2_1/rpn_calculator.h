@@ -2,13 +2,13 @@
 #define RPN_CALCULATOR_H_
 
 #include "fraction.h"
+#include "pvector.h"
 #include <iostream>
-#include <vector>
 
 class rpn_calculator
 {
 
-	std::vector<fraction> stack;
+	pvector<fraction> stack;
 
 	void check();
 
