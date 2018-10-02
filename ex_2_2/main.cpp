@@ -11,5 +11,10 @@ int main(int argc, char** argv)
 		cout << f << endl;
 	}
 
+	fraction f;
+	cout << ">>> ";
+	cin >> f;
+	pv.push_back(f);
+
 	return 0;
 }
