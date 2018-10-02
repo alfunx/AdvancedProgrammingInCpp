@@ -3,6 +3,9 @@
 
 fraction::fraction(int cnt, int dnm) : c(cnt), d(dnm)
 {
+	if (0 == d)
+		throw std::invalid_argument("Illegal denominator 0.");
+
 	if (0 == c % d) {
 		c = c / d;
 		d = 1;
