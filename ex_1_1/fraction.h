@@ -19,24 +19,22 @@ public:
 
 	fraction(int cnt = 0, int dnm = 1);
 
-	operator double();
-	operator float();
+	operator double() const;
+	operator float() const;
 
-	int get_counter();
-	int get_denominator();
+	int get_counter() const;
+	int get_denominator() const;
 
-	fraction operator+(fraction f);
-	fraction operator-(fraction f);
-	fraction operator*(fraction f);
-	fraction operator/(fraction f);
-	fraction operator*(int i);
-	fraction operator/(int i);
-	bool operator==(fraction f);
-	bool operator!=(fraction f);
-	bool operator<(fraction f);
-	bool operator>(fraction f);
-	const bool operator<(fraction f) const;
-	const bool operator>(fraction f) const;
+	fraction operator+(const fraction f) const;
+	fraction operator-(const fraction f) const;
+	fraction operator*(const fraction f) const;
+	fraction operator/(const fraction f) const;
+	fraction operator*(const int i) const;
+	fraction operator/(const int i) const;
+	bool operator==(const fraction f) const;
+	bool operator!=(const fraction f) const;
+	bool operator<(const fraction f) const;
+	bool operator>(const fraction f) const;
 
 };
 

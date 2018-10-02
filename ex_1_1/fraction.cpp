@@ -70,27 +70,27 @@ std::istream& operator>>(std::istream& is, fraction& f)
 	return is;
 }
 
-fraction::operator double()
+fraction::operator double() const
 {
 	return (double)c / d;
 }
 
-fraction::operator float()
+fraction::operator float() const
 {
 	return (float)c / d;
 }
 
-int fraction::get_counter()
+int fraction::get_counter() const
 {
 	return c;
 }
 
-int fraction::get_denominator()
+int fraction::get_denominator() const
 {
 	return d;
 }
 
-fraction fraction::operator+(fraction f)
+fraction fraction::operator+(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 	int cnt = c * dnm / d + f.c * dnm / f.d;
@@ -98,7 +98,7 @@ fraction fraction::operator+(fraction f)
 	return fraction(cnt, dnm);
 }
 
-fraction fraction::operator-(fraction f)
+fraction fraction::operator-(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 	int cnt = c * dnm / d - f.c * dnm / f.d;
@@ -106,7 +106,7 @@ fraction fraction::operator-(fraction f)
 	return fraction(cnt, dnm);
 }
 
-fraction fraction::operator*(fraction f)
+fraction fraction::operator*(const fraction f) const
 {
 	int n = gcf(c, f.d);
 	int m = gcf(f.c, d);
@@ -114,7 +114,7 @@ fraction fraction::operator*(fraction f)
 	return fraction((c / n) * (f.c / m), (d / m * (f.d / n)));
 }
 
-fraction fraction::operator/(fraction f)
+fraction fraction::operator/(const fraction f) const
 {
 	int n = gcf(c, f.c);
 	int m = gcf(f.d, d);
@@ -122,48 +122,34 @@ fraction fraction::operator/(fraction f)
 	return fraction((c / n) * (f.d / m), (d / m * (f.c / n)));
 }
 
-fraction fraction::operator*(int i)
+fraction fraction::operator*(const int i) const
 {
 	return *this * fraction(i);
 }
 
-fraction fraction::operator/(int i)
+fraction fraction::operator/(const int i) const
 {
 	return *this / fraction(i);
 }
 
-bool fraction::operator==(fraction f)
+bool fraction::operator==(const fraction f) const
 {
 	return (double)c / f.c == (double)d / f.d;
 }
 
-bool fraction::operator!=(fraction f)
+bool fraction::operator!=(const fraction f) const
 {
 	return (double)c / f.c != (double)d / f.d;
 }
 
-bool fraction::operator<(fraction f)
+bool fraction::operator<(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 
 	return c * dnm < f.c * dnm;
 }
 
-bool fraction::operator>(fraction f)
-{
-	int dnm = lcm(d, f.d);
-
-	return c * dnm > f.c * dnm;
-}
-
-const bool fraction::operator<(fraction f) const
-{
-	int dnm = lcm(d, f.d);
-
-	return c * dnm < f.c * dnm;
-}
-
-const bool fraction::operator>(fraction f) const
+bool fraction::operator>(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 
