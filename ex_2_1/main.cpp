@@ -85,7 +85,6 @@ void interactive_test()
 
 		rpn.print();
 	}
-
 }
 
 void print_help()
