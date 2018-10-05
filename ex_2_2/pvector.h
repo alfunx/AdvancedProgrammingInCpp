@@ -39,11 +39,13 @@ public:
 	pvector(std::string&& file) : f(file)
 	{
 		load();
+		std::cout << "Constructor called." << std::endl;
 	}
 
 	~pvector()
 	{
 		save();
+		std::cout << "Destructor called." << std::endl;
 	}
 
 };
