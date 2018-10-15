@@ -10,8 +10,6 @@ class rpn_calculator
 
 	pvector<fraction> stack;
 
-	void check();
-
 public:
 
 	rpn_calculator();
