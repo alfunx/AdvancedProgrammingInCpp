@@ -137,24 +137,28 @@ fraction fraction::operator /(const int i) const
 
 bool fraction::operator ==(const fraction f) const
 {
-	return (double)c / f.c == (double)d / f.d;
+	int dnm = lcm(d, f.d);
+
+	return c * dnm / d == f.c * dnm / f.d;
 }
 
 bool fraction::operator !=(const fraction f) const
 {
-	return (double)c / f.c != (double)d / f.d;
+	int dnm = lcm(d, f.d);
+
+	return c * dnm / d != f.c *dnm / f.d;
 }
 
 bool fraction::operator <(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 
-	return c * dnm < f.c * dnm;
+	return c * dnm / d < f.c * dnm / f.d;
 }
 
 bool fraction::operator >(const fraction f) const
 {
 	int dnm = lcm(d, f.d);
 
-	return c * dnm > f.c * dnm;
+	return c * dnm / d > f.c * dnm / f.d;
 }
