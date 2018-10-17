@@ -35,7 +35,7 @@ class pset : public std::set<T>
 
 public:
 
-	pset(std::string&& file) : file(file)
+	pset(const std::string& file) : file(file)
 	{
 		load();
 	}

@@ -35,7 +35,7 @@ class pvector : public std::vector<T>
 
 public:
 
-	pvector(std::string&& file) : file(file)
+	pvector(const std::string& file) : file(file)
 	{
 		load();
 	}
