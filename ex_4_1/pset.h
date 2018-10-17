@@ -28,7 +28,7 @@ class pset : public std::set<T>
 	{
 		std::ofstream ofs(file);
 
-		for (const T &t : *this) {
+		for (const T& t : *this) {
 			P::write(ofs, t);
 		}
 	}

@@ -28,7 +28,7 @@ class pvector : public std::vector<T>
 	{
 		std::ofstream ofs(file);
 
-		for (const T &t : *this) {
+		for (const T& t : *this) {
 			P::write(ofs, t);
 		}
 	}

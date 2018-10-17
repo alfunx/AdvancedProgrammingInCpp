@@ -13,11 +13,9 @@ void pass_dumb_pointer(dumb_pointer<T> p)
 
 void dumb_pointer_test(bool pass = false)
 {
-	std::list<int> *l = new list<int>();
-	l->push_back(1);
-	l->push_back(2);
-
-	dumb_pointer<list<int>> p(l);
+	dumb_pointer<list<int>> p(new list<int>());
+	p->push_back(1);
+	p->push_back(2);
 	cout << ">>> p:      " << p << endl << endl;
 
 	list<int> l_new = *p;
@@ -38,11 +36,9 @@ void pass_smart_pointer(smart_pointer<T> p)
 
 void smart_pointer_test(bool pass = false)
 {
-	std::list<int> *l = new list<int>();
-	l->push_back(1);
-	l->push_back(2);
-
-	smart_pointer<list<int>> p(l);
+	smart_pointer<list<int>> p(new list<int>());
+	p->push_back(1);
+	p->push_back(2);
 	cout << ">>> p:      " << p << endl << endl;
 
 	list<int> l_new = *p;
@@ -57,12 +53,12 @@ void smart_pointer_test(bool pass = false)
 
 void smart_pointer_test2()
 {
-	std::list<int> *l = new list<int>();
-	l->push_back(1);
-	l->push_back(2);
-
-	smart_pointer<list<int>> p(l);
-	cout << ">>> p0:     " << p << endl << endl;
+	smart_pointer<list<int>> p(new list<int>());
+	cout << ">>> p0:     " << p << endl;
+	p->push_back(1);
+	cout << "    lenght: " << p->size() << endl;
+	p->push_back(2);
+	cout << "    lenght: " << p->size() << endl << endl;
 
 	smart_pointer<list<int>> p1 = p;
 	smart_pointer<list<int>> p2 = p;
