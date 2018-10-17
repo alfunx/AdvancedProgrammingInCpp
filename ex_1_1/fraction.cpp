@@ -40,7 +40,10 @@ inline bool check_char(std::istream& is, char ch, bool badbit = true)
 
 std::ostream& operator <<(std::ostream& os, fraction f)
 {
-	os << '(' << f.c << '/' << f.d << ')';
+	if (1 == f.d)
+		os << f.c;
+	else
+		os << '(' << f.c << '/' << f.d << ')';
 	return os;
 }
 

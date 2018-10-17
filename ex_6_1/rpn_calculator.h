@@ -3,6 +3,7 @@
 
 #include "pvector.h"
 #include <iostream>
+#include <string>
 
 template<typename T, typename C=pvector<T>>
 class rpn_calculator
@@ -43,10 +44,7 @@ public:
 	{
 		int c = 0;
 		for (T& t : stack) {
-			if (1 == t.get_denominator())
-				std::cout << c++ << ": " << t.get_counter() << std::endl;
-			else
-				std::cout << c++ << ": " << t << std::endl;
+			std::cout << c++ << ": " << t << std::endl;
 		}
 	}
 
@@ -63,7 +61,8 @@ public:
 		if (stack.size() < 2)
 			return;
 
-		push(pop() - pop());
+		T t = pop();
+		push(pop() - t);
 	}
 
 	void mul()
@@ -79,12 +78,13 @@ public:
 		if (stack.size() < 2)
 			return;
 
-		if (0 == stack.back().get_counter()) {
+		if (0 == (double)stack.back()) {
 			print_error("Division by 0!");
 			return;
 		}
 
-		push(pop() / pop());
+		T t = pop();
+		push(pop() / t);
 	}
 
 	void min()
