@@ -5,20 +5,6 @@
 #include <vector>
 using namespace std;
 
-void static_test()
-{
-	rpn_calculator<fraction> rpn;
-
-	cout << ">>> n 1 n 2" << endl;
-	rpn.push(fraction(1));
-	rpn.push(fraction(2));
-	rpn.print();
-
-	cout << ">>> +" << endl;
-	rpn.add();
-	rpn.print();
-}
-
 inline void interactive_help()
 {
 	cout << endl
@@ -38,11 +24,10 @@ inline void interactive_help()
 		<< "Example usage: n 3 n 2 n 1 + * n 3 /" << endl << endl;
 }
 
-void interactive_test()
+template<typename T>
+void interactive_mode(rpn_calculator<T>& rpn)
 {
 	cout << "Enter 'q' to quit, enter 'h' for help." << endl << endl;
-
-	rpn_calculator<fraction, pvector<fraction>> rpn;
 	rpn.print();
 
 	for (;;) {
@@ -90,17 +75,23 @@ void interactive_test()
 
 void print_help()
 {
-	cout << "usage: rpn [-s]" << endl;
+	cout << "usage: rpn [-d | -f] <persistence-file>" << endl;
 }
 
 int main(int argc, char** argv)
 {
 	vector<string> args(argv, argv + argc);
 
-	for (int i = 1; i < argc; i++) {
-		if ("-s" == args[i]) {
-			static_test();
-			return 0;
+	bool _double = false;
+	bool _fraction = true;
+
+	for (int i = 1; i < argc - 1; i++) {
+		if ("-d" == args[i]) {
+			_double = true;
+			_fraction = false;
+		} else if ("-f" == args[i]) {
+			_double = false;
+			_fraction = true;
 		} else if ("-h" == args[i]) {
 			print_help();
 			return 0;
@@ -110,7 +101,19 @@ int main(int argc, char** argv)
 		}
 	}
 
-	interactive_test();
+	if (argc < 2) {
+		print_help();
+		return 1;
+	}
+	string file = args[argc - 1];
+
+	if (_double) {
+		rpn_calculator<double> rpn(file);
+		interactive_mode(rpn);
+	} else if (_fraction) {
+		rpn_calculator<fraction> rpn(file);
+		interactive_mode(rpn);
+	}
 
 	return 0;
 }

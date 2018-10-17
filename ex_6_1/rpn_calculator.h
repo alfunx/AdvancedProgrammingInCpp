@@ -18,7 +18,7 @@ class rpn_calculator
 
 public:
 
-	rpn_calculator() : stack("rpn_stack.txt")
+	rpn_calculator(std::string& file) : stack(file)
 	{
 		/* void */
 	}
