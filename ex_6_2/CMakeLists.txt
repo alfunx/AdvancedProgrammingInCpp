@@ -7,6 +7,7 @@ include_directories(
 
 set(SOURCES
     main.cpp
+    playfield.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
