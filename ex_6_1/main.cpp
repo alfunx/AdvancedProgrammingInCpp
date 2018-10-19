@@ -38,13 +38,13 @@ void interactive_mode(rpn_calculator<T>& rpn)
 		istringstream iss(input);
 
 		while (iss) {
-			fraction f;
+			T t;
 			string s;
 			iss >> s;
 
 			if ("n" == s) {
-				iss >> f;
-				rpn.push(f);
+				iss >> t;
+				rpn.push(t);
 			} else if ("+" == s)
 				rpn.add();
 			else if ("-" == s)
