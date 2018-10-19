@@ -16,7 +16,13 @@ public:
 
 	int play(const F& field)
 	{
-		return (rand() % F::width);
+		int column;
+
+		do {
+			column = rand() % F::width;
+		} while (field.stoneat(column, 0) != F::none);
+
+		return column;
 	}
 
 };

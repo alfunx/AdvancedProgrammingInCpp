@@ -12,9 +12,12 @@ public:
 	int play(const F& field)
 	{
 		int column;
-		std::cout << ">>> ";
-		std::cin >> column;
-		std::cout << std::endl;
+
+		do {
+			std::cout << ">>> ";
+			std::cin >> column;
+			std::cout << std::endl;
+		} while (field.stoneat(column, 0) != F::none);
 
 		return column;
 	}
