@@ -7,7 +7,7 @@ void pvector_test()
 {
 	pvector<fraction> pv("pvector.txt");
 
-	for (const fraction &f : pv) {
+	for (const fraction& f : pv) {
 		cout << f << endl;
 	}
 
@@ -22,7 +22,7 @@ void pset_test()
 {
 	pset<fraction> ps("pset.txt");
 
-	for (const fraction &f : ps) {
+	for (const fraction& f : ps) {
 		cout << f << endl;
 	}
 
@@ -35,9 +35,23 @@ void pset_test()
 		cout << " already exists: " << *it.first << endl;
 }
 
+void string_pvector_test()
+{
+	pvector<string> pv("string.txt");
+
+	for (const string& s : pv) {
+		cout << s << endl;
+	}
+
+	string s;
+	cout << ">>> ";
+	getline(cin, s);
+	pv.push_back(s);
+}
+
 void print_help()
 {
-	cout << "usage: traits [-s] [-v]" << endl;
+	cout << "usage: traits [-s] [-v] [-st]" << endl;
 }
 
 int main(int argc, char** argv)
@@ -50,6 +64,9 @@ int main(int argc, char** argv)
 			return 0;
 		} else if ("-s" == args[i]) {
 			pset_test();
+			return 0;
+		} else if ("-st" == args[i]) {
+			string_pvector_test();
 			return 0;
 		} else if ("-h" == args[i]) {
 			print_help();

@@ -28,6 +28,11 @@ struct persistence_traits<std::string>
 		std::getline(ifs, s);
 	}
 
+	static void write(std::ofstream& ofs, const std::string& s)
+	{
+		ofs << s << std::endl;
+	}
+
 };
 
 #endif  // PERSISTENCE_TRAITS_H_
