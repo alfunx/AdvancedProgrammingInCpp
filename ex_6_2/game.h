@@ -3,6 +3,8 @@
 
 #include "interactive_player.h"
 #include <iostream>
+#include <string>
+#include <vector>
 
 template<typename F, typename P=interactive_player<F>, typename Q=interactive_player<F>>
 class game
@@ -13,6 +15,7 @@ class game
 	Q player2;
 
 	char current;
+	std::vector<std::string> stone;
 
 public:
 
@@ -20,12 +23,17 @@ public:
 	{
 		srand(time(NULL));
 		current = rand() % F::max_players + 1;
+		stone = {" ", "1", "2"};
+	}
+
+	game(const std::vector<std::string>& s) : field(s), player1(), player2(), stone(s)
+	{
+		srand(time(NULL));
+		current = rand() % F::max_players + 1;
 	}
 
 	void play()
 	{
-		const std::string stone[] = {" ", "\e[91m●\e[0m", "\e[93m●\e[0m"};
-
 		bool draw = true;
 
 		while (field.grid_playable()) {
@@ -33,7 +41,7 @@ public:
 
 			std::cout << "It's player "
 				<< stone[current]
-				<< " 's turn." << std::endl;
+				<< "'s turn." << std::endl;
 
 			play_round();
 

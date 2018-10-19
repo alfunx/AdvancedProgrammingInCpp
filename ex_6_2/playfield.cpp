@@ -1,7 +1,19 @@
 #include "playfield.h"
 #include <iostream>
+#include <string>
+#include <vector>
 
 playfield::playfield()
+{
+	for (int j = 0; j < playfield::height; j++) {
+		for (int i = 0; i < playfield::width; i++) {
+			rep[i][j] = playfield::none;
+		}
+	}
+	stone = {" ", "1", "2"};
+}
+
+playfield::playfield(const std::vector<std::string>& s) : stone(s)
 {
 	for (int j = 0; j < playfield::height; j++) {
 		for (int i = 0; i < playfield::width; i++) {
@@ -99,9 +111,6 @@ bool playfield::check_diagonal_right(int x, int y, int p) const
 
 void playfield::print() const
 {
-	// define stones
-	const std::string stone[] = {" ", "\e[91m●\e[0m", "\e[93m●\e[0m"};
-
 	// clear screen
 	std::cout << "\e[2J\e[1;1H" << std::endl;
 
@@ -110,7 +119,7 @@ void playfield::print() const
 	std::cout << std::endl;
 
 	// print grid
-	playfield::print_grid(stone);
+	playfield::print_grid();
 	std::cout << std::endl;
 }
 
@@ -122,7 +131,7 @@ void playfield::print_header() const
 	}
 }
 
-void playfield::print_grid(const std::string stone[]) const
+void playfield::print_grid() const
 {
 	playfield::print_indent();
 	print_line("┌───", "┬───", "┐");
@@ -145,7 +154,7 @@ void playfield::print_grid(const std::string stone[]) const
 	}
 }
 
-void playfield::print_line(std::string l, std::string m, std::string r) const
+void playfield::print_line(const std::string& l, const std::string& m, const std::string& r) const
 {
 	std::cout << l;
 	for (int i = 1; i < playfield::width; i++) {

@@ -2,6 +2,7 @@
 #define PLAYFIELD_H_
 
 #include <string>
+#include <vector>
 
 class playfield
 {
@@ -9,6 +10,7 @@ class playfield
 	const static int indent = 4;
 
 	int current_height = playfield::height;
+	std::vector<std::string> stone;
 
 public:
 
@@ -30,6 +32,7 @@ protected:
 public:
 
 	playfield();
+	playfield(const std::vector<std::string>& s);
 	int stoneat(int x, int y) const;
 
 public:
@@ -53,8 +56,8 @@ public:
 private:
 
 	void print_header() const;
-	void print_grid(const std::string stone[]) const;
-	void print_line(std::string l, std::string m, std::string r) const;
+	void print_grid() const;
+	void print_line(const std::string& l, const std::string& m, const std::string& r) const;
 	void print_indent() const;
 
 };
