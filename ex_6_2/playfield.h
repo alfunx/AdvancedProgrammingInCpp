@@ -10,7 +10,6 @@ class playfield
 	const static int indent = 4;
 
 	int current_height = height;
-	std::vector<std::string> stone;
 
 public:
 
@@ -24,6 +23,8 @@ public:
 	const static int none = 0;
 	const static int player1 = 1;
 	const static int player2 = 2;
+
+	const std::vector<std::string> stone;
 
 protected:
 

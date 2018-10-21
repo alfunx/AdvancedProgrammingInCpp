@@ -15,7 +15,6 @@ class game
 	Q player2;
 
 	char current;
-	std::vector<std::string> stone;
 
 public:
 
@@ -24,7 +23,7 @@ public:
 		/* void */
 	}
 
-	game(const std::vector<std::string>& s) : field(s), player1(), player2(), stone(s)
+	game(const std::vector<std::string>& s) : field(s), player1(), player2()
 	{
 		srand(time(NULL));
 		current = rand() % F::max_players + 1;
@@ -38,7 +37,7 @@ public:
 			field.print();
 
 			std::cout << "It's player "
-				<< stone[current]
+				<< field.stone[current]
 				<< "'s turn." << std::endl;
 
 			play_round();
@@ -57,7 +56,7 @@ public:
 			std::cout << "It's a draw!" << std::endl;
 		} else {
 			std::cout << "Player "
-				<< stone[current]
+				<< field.stone[current]
 				<< " is the winner!" << std::endl;
 		}
 	}
