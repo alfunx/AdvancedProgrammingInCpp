@@ -5,21 +5,13 @@
 
 playfield::playfield()
 {
-	for (int j = 0; j < playfield::height; j++) {
-		for (int i = 0; i < playfield::width; i++) {
-			rep[i][j] = playfield::none;
-		}
-	}
+	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
 	stone = {" ", "1", "2"};
 }
 
 playfield::playfield(const std::vector<std::string>& s) : stone(s)
 {
-	for (int j = 0; j < playfield::height; j++) {
-		for (int i = 0; i < playfield::width; i++) {
-			rep[i][j] = playfield::none;
-		}
-	}
+	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
 }
 
 int playfield::stoneat(int x, int y) const
@@ -29,14 +21,13 @@ int playfield::stoneat(int x, int y) const
 
 bool playfield::column_playable(int x) const
 {
-	return x < playfield::width &&
-		rep[x][0] == playfield::none;
+	return x < width && rep[x][0] == none;
 }
 
 bool playfield::grid_playable() const
 {
 	for (int i = 0; i < width; i++) {
-		if (rep[i][0] == playfield::none)
+		if (rep[i][0] == none)
 			return true;
 	}
 
@@ -45,8 +36,8 @@ bool playfield::grid_playable() const
 
 void playfield::insert(int x, int p)
 {
-	int i = playfield::height;
-	while (rep[x][--i] != playfield::none);
+	int i = height;
+	while (rep[x][--i] != none);
 
 	current_height = std::min(current_height, i);
 
@@ -55,16 +46,13 @@ void playfield::insert(int x, int p)
 
 bool playfield::has_won(int p) const
 {
-	for (int j = playfield::height - 1; j >= current_height; j--) {
-		for (int i = 0; i < playfield::width; i++) {
-			if (i + playfield::win_check < playfield::width &&
-					check_horizontal(i, j, p))
+	for (int j = height - 1; j >= current_height; j--) {
+		for (int i = 0; i < width; i++) {
+			if (i + win_check < width && check_horizontal(i, j, p))
 				return true;
-			if (j - playfield::win_check > 0 &&
-					check_vertical(i, j, p))
+			if (j - win_check > 0 && check_vertical(i, j, p))
 				return true;
-			if (i + playfield::win_check < playfield::width &&
-					j - playfield::win_check > 0 &&
+			if (i + win_check < width && j - win_check > 0 &&
 					(check_diagonal_left(i, j, p) ||
 					 check_diagonal_right(i, j, p)))
 				return true;
@@ -75,7 +63,7 @@ bool playfield::has_won(int p) const
 
 bool playfield::check_horizontal(int x, int y, int p) const
 {
-	for (int i = 0; i < playfield::win; i++) {
+	for (int i = 0; i < win; i++) {
 		if (rep[x + i][y] != p)
 			return false;
 	}
@@ -84,7 +72,7 @@ bool playfield::check_horizontal(int x, int y, int p) const
 
 bool playfield::check_vertical(int x, int y, int p) const
 {
-	for (int i = 0; i < playfield::win; i++) {
+	for (int i = 0; i < win; i++) {
 		if (rep[x][y - i] != p)
 			return false;
 	}
@@ -93,7 +81,7 @@ bool playfield::check_vertical(int x, int y, int p) const
 
 bool playfield::check_diagonal_left(int x, int y, int p) const
 {
-	for (int i = 0; i < playfield::win; i++) {
+	for (int i = 0; i < win; i++) {
 		if (rep[x + i][y - i] != p)
 			return false;
 	}
@@ -102,8 +90,8 @@ bool playfield::check_diagonal_left(int x, int y, int p) const
 
 bool playfield::check_diagonal_right(int x, int y, int p) const
 {
-	for (int i = 0; i < playfield::win; i++) {
-		if (rep[x + i][y + i - playfield::win_check] != p)
+	for (int i = 0; i < win; i++) {
+		if (rep[x + i][y + i - win_check] != p)
 			return false;
 	}
 	return true;
@@ -115,40 +103,40 @@ void playfield::print() const
 	std::cout << "\e[2J\e[1;1H" << std::endl;
 
 	// print header
-	playfield::print_header();
+	print_header();
 	std::cout << std::endl;
 
 	// print grid
-	playfield::print_grid();
+	print_grid();
 	std::cout << std::endl;
 }
 
 void playfield::print_header() const
 {
-	playfield::print_indent();
-	for (int i = 0; i < playfield::width; i++) {
+	print_indent();
+	for (int i = 0; i < width; i++) {
 		std::cout << "  " << i << " ";
 	}
 }
 
 void playfield::print_grid() const
 {
-	playfield::print_indent();
+	print_indent();
 	print_line("┌───", "┬───", "┐");
 
-	for (int j = 0; j < playfield::height; j++) {
-		playfield::print_indent();
+	for (int j = 0; j < height; j++) {
+		print_indent();
 
-		for (int i = 0; i < playfield::width; i++) {
+		for (int i = 0; i < width; i++) {
 			std::cout << "│ " << stone[rep[i][j]] << " ";
 		}
 		std::cout << "│" << std::endl;
 
-		if (j + 1 < playfield::height) {
-			playfield::print_indent();
+		if (j + 1 < height) {
+			print_indent();
 			print_line("├───", "┼───", "┤");
 		} else {
-			playfield::print_indent();
+			print_indent();
 			print_line("└───", "┴───", "┘");
 		}
 	}
@@ -157,7 +145,7 @@ void playfield::print_grid() const
 void playfield::print_line(const std::string& l, const std::string& m, const std::string& r) const
 {
 	std::cout << l;
-	for (int i = 1; i < playfield::width; i++) {
+	for (int i = 1; i < width; i++) {
 		std::cout << m;
 	}
 	std::cout << r << std::endl;

@@ -9,7 +9,7 @@ class playfield
 
 	const static int indent = 4;
 
-	int current_height = playfield::height;
+	int current_height = height;
 	std::vector<std::string> stone;
 
 public:
@@ -27,7 +27,7 @@ public:
 
 protected:
 
-	char rep[playfield::width][playfield::height];
+	char rep[width][height];
 
 public:
 

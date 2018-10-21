@@ -66,9 +66,9 @@ public:
 
 	void play_round()
 	{
-		if (F::player1 == current)
+		if (current == F::player1)
 			ensure_play(player1, F::player1);
-		else if (F::player2 == current)
+		else if (current == F::player2)
 			ensure_play(player2, F::player2);
 	}
 
