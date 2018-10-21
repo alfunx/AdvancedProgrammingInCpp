@@ -19,11 +19,9 @@ class game
 
 public:
 
-	game() : player1(), player2()
+	game() : game({" ", "1", "2"})
 	{
-		srand(time(NULL));
-		current = rand() % F::max_players + 1;
-		stone = {" ", "1", "2"};
+		/* void */
 	}
 
 	game(const std::vector<std::string>& s) : field(s), player1(), player2(), stone(s)

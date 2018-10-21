@@ -3,10 +3,9 @@
 #include <string>
 #include <vector>
 
-playfield::playfield()
+playfield::playfield() : playfield::playfield({" ", "1", "2"})
 {
-	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
-	stone = {" ", "1", "2"};
+	/* void */
 }
 
 playfield::playfield(const std::vector<std::string>& s) : stone(s)
