@@ -7,9 +7,11 @@ template<typename F>
 class random_player
 {
 
+	int player_id;
+
 public:
 
-	random_player()
+	random_player(int player_id) : player_id(player_id)
 	{
 		srand(time(NULL));
 	}

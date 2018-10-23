@@ -23,7 +23,7 @@ public:
 		/* void */
 	}
 
-	game(const std::vector<std::string>& s) : field(s), player1(), player2()
+	game(const std::vector<std::string>& s) : field(s), player1(F::player1), player2(F::player2)
 	{
 		srand(time(NULL));
 		current = rand() % F::max_players + 1;

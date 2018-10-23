@@ -7,7 +7,14 @@ template<typename F>
 class interactive_player
 {
 
+	int player_id;
+
 public:
+
+	interactive_player(int player_id) : player_id(player_id)
+	{
+		/* void */
+	}
 
 	int play(const F& field)
 	{
