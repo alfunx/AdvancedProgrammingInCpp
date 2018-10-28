@@ -15,7 +15,6 @@ public:
 
 	const static char max_players = 2;
 	const static int win = 4;
-	const static int win_check = win - 1;
 
 	const static int width = 7;
 	const static int height = 6;

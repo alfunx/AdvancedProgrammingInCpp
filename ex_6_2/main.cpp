@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	for (int i = 1; i < argc; i++) {
+	for (int i = 1; i < argc; ++i) {
 		if ("-i" == args[i]) {
 			game<playfield> g(stone);
 			g.play();
