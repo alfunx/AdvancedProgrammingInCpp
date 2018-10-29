@@ -1,9 +1,9 @@
 #ifndef PSET_H_
 #define PSET_H_
 
-#include "persistence_traits.h"
 #include <fstream>
 #include <set>
+#include "persistence_traits.h"
 
 template<typename T, typename P=persistence_traits<T>>
 class pset : public std::set<T>

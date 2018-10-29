@@ -1,9 +1,9 @@
 #ifndef PVECTOR_H_
 #define PVECTOR_H_
 
-#include "persistence_traits.h"
 #include <fstream>
 #include <vector>
+#include "persistence_traits.h"
 
 template<typename T, typename P=persistence_traits<T>>
 class pvector : public std::vector<T>
