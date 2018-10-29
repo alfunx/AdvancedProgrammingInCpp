@@ -1,14 +1,11 @@
-#include "playfield.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "playfield.h"
 
-playfield::playfield() : playfield::playfield({" ", "1", "2"})
-{
-	/* void */
-}
-
-playfield::playfield(const std::vector<std::string>& s) : stone(s)
+playfield::playfield(const std::vector<std::string>& s, bool c) :
+	stone(s),
+	clear(c)
 {
 	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
 }
@@ -18,88 +15,19 @@ int playfield::stoneat(int x, int y) const
 	return rep[x][y];
 }
 
-bool playfield::column_playable(int x) const
-{
-	return x < width && rep[x][0] == none;
-}
-
-bool playfield::grid_playable() const
-{
-	for (int i = 0; i < width; ++i) {
-		if (rep[i][0] == none)
-			return true;
-	}
-
-	return false;
-}
-
 void playfield::insert(int x, int p)
 {
 	int i = height;
 	while (rep[x][--i] != none);
 
-	current_height = std::min(current_height, i);
-
 	rep[x][i] = p;
-}
-
-bool playfield::has_won(int p) const
-{
-	for (int j = height - 1; j >= current_height; --j) {
-		for (int i = 0; i < width; ++i) {
-			if (i + win <= width && check_horizontal(i, j, p))
-				return true;
-			if (j - win >= 0 && check_vertical(i, j, p))
-				return true;
-			if (i + win <= width && j - win >= 0 &&
-					(check_diagonal_left(i, j, p) ||
-					 check_diagonal_right(i, j, p)))
-				return true;
-		}
-	}
-	return false;
-}
-
-bool playfield::check_horizontal(int x, int y, int p) const
-{
-	for (int i = 0; i < win; ++i) {
-		if (rep[x + i][y] != p)
-			return false;
-	}
-	return true;
-}
-
-bool playfield::check_vertical(int x, int y, int p) const
-{
-	for (int i = 0; i < win; ++i) {
-		if (rep[x][y - i] != p)
-			return false;
-	}
-	return true;
-}
-
-bool playfield::check_diagonal_left(int x, int y, int p) const
-{
-	for (int i = 0; i < win; ++i) {
-		if (rep[x + i][y - i] != p)
-			return false;
-	}
-	return true;
-}
-
-bool playfield::check_diagonal_right(int x, int y, int p) const
-{
-	for (int i = 0; i < win; ++i) {
-		if (rep[x + i][y + i - win - 1] != p)
-			return false;
-	}
-	return true;
 }
 
 void playfield::print() const
 {
 	// clear screen
-	std::cout << "\e[2J\e[1;1H" << std::endl;
+	if (clear)
+		std::cout << "\e[2J\e[1;1H" << std::endl;
 
 	// print header
 	print_header();

@@ -2,16 +2,19 @@
 #define INTERACTIVE_PLAYER_H_
 
 #include <iostream>
+#include "alphonse_playfield_traits.h"
 
 template<typename F>
 class interactive_player
 {
 
 	int player_id;
+	typedef alphonse::playfield_traits<F> pt;
 
 public:
 
-	interactive_player(int player_id) : player_id(player_id)
+	interactive_player(int player_id) :
+		player_id(player_id)
 	{
 		/* void */
 	}
@@ -24,7 +27,7 @@ public:
 			std::cout << ">>> ";
 			std::cin >> column;
 			std::cout << std::endl;
-		} while (field.stoneat(column, 0) != F::none);
+		} while (!pt::column_playable(field, column));
 
 		return column;
 	}

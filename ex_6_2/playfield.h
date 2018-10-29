@@ -3,18 +3,18 @@
 
 #include <string>
 #include <vector>
+#include "alphonse_playfield_traits.h"
 
 class playfield
 {
 
 	const static int indent = 4;
 
-	int current_height = height;
+	const int clear;
+
+	typedef alphonse::playfield_traits<playfield> pt;
 
 public:
-
-	const static char max_players = 2;
-	const static int win = 4;
 
 	const static int width = 7;
 	const static int height = 6;
@@ -31,26 +31,9 @@ protected:
 
 public:
 
-	playfield();
-	playfield(const std::vector<std::string>& s);
+	playfield(const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true);
 	int stoneat(int x, int y) const;
-
-public:
-
-	bool column_playable(int x) const;
-	bool grid_playable() const;
 	void insert(int x, int p);
-	bool has_won(int p) const;
-
-private:
-
-	bool check_horizontal(int x, int y, int p) const;
-	bool check_vertical(int x, int y, int p) const;
-	bool check_diagonal_left(int x, int y, int p) const;
-	bool check_diagonal_right(int x, int y, int p) const;
-
-public:
-
 	void print() const;
 
 private:

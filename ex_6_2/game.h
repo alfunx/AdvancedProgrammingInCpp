@@ -1,10 +1,11 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "interactive_player.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "alphonse_playfield_traits.h"
+#include "interactive_player.h"
 
 template<typename F, typename P=interactive_player<F>, typename Q=interactive_player<F>>
 class game
@@ -14,26 +15,28 @@ class game
 	P player1;
 	Q player2;
 
+	char first;
 	char current;
+
+	typedef alphonse::playfield_traits<F> pt;
 
 public:
 
-	game() : game({" ", "1", "2"})
-	{
-		/* void */
-	}
-
-	game(const std::vector<std::string>& s) : field(s), player1(F::player1), player2(F::player2)
+	game(const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true) :
+		field(s, c),
+		player1(F::player1),
+		player2(F::player2)
 	{
 		srand(time(NULL));
-		current = rand() % F::max_players + 1;
+		first = rand() % pt::max_players + 1;
+		current = first;
 	}
 
 	void play()
 	{
 		bool draw = true;
 
-		while (field.grid_playable()) {
+		while (pt::grid_playable(field)) {
 			field.print();
 
 			std::cout << "It's player "
@@ -42,7 +45,7 @@ public:
 
 			play_round();
 
-			if (field.has_won(current)) {
+			if (pt::has_won(field, current)) {
 				draw = false;
 				break;
 			}
@@ -58,6 +61,9 @@ public:
 			std::cout << "Player "
 				<< field.stone[current]
 				<< " is the winner!" << std::endl;
+			std::cout << "Player "
+				<< field.stone[first]
+				<< " played the first move." << std::endl;
 		}
 	}
 
@@ -71,7 +77,7 @@ public:
 
 	void next_round()
 	{
-		current = current % F::max_players + 1;
+		current = current % pt::max_players + 1;
 	}
 
 	template<typename T>
@@ -80,7 +86,7 @@ public:
 		int column;
 		do {
 			column = t.play(field);
-		} while (!field.column_playable(column));
+		} while (!pt::column_playable(field, column));
 		field.insert(column, p);
 	}
 
