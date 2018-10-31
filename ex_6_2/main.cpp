@@ -3,12 +3,13 @@
 #include <vector>
 #include "game.h"
 #include "playfield.h"
+#include "alphonse_player.h"
 #include "random_player.h"
 using namespace std;
 
 void print_help()
 {
-	cout << "usage: connect4 [-n] [-c] [-ii | -ri]" << endl;
+	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -aa]" << endl;
 }
 
 int main(int argc, char** argv)
@@ -28,6 +29,12 @@ int main(int argc, char** argv)
 			g.play();
 		} else if ("-ri" == args[i]) {
 			game<playfield, random_player<playfield>> g(stone, clear);
+			g.play();
+		} else if ("-ai" == args[i]) {
+			game<playfield, alphonse::player<playfield>> g(stone, clear);
+			g.play();
+		} else if ("-aa" == args[i]) {
+			game<playfield, alphonse::player<playfield>, alphonse::player<playfield>> g(stone, clear);
 			g.play();
 		} else if ("-n" == args[i]) {
 			stone = {" ", "1", "2"};
