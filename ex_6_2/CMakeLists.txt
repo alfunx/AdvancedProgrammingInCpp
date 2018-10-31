@@ -12,6 +12,10 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include_directories(
     .
+    players/dominik
+    players/janik
+    players/kilian
+    players/joni
 )
 
 set(SOURCES

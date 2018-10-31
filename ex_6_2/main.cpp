@@ -8,6 +8,11 @@
 #include "random_player.h"
 #include "alphonse_player.h"
 
+#include "CPKili.h"
+#include "janik_player.h"
+#include "dominik_player.h"
+#include "joni_player.h"
+
 using namespace std;
 
 const int a = playfield::player1;
@@ -18,7 +23,7 @@ bool clear = true;
 
 void print_help()
 {
-	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -ar | -aa]" << endl;
+	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -ar | -aa | -ak | -aj | -ad | -ajo]" << endl;
 }
 
 template<typename P1, typename P2>
@@ -47,6 +52,14 @@ int main(int argc, char** argv)
 			play(alphonse::player<playfield>(a), random_player<playfield>(b));
 		} else if ("-aa" == args[i]) {
 			play(alphonse::player<playfield>(a), alphonse::player<playfield>(b));
+		} else if ("-ak" == args[i]) {
+			play(alphonse::player<playfield>(a), CPKili<playfield>(b));
+		} else if ("-aj" == args[i]) {
+			play(alphonse::player<playfield>(a), janik::player<playfield>(b));
+		} else if ("-ad" == args[i]) {
+			play(alphonse::player<playfield>(a), dominik::player<playfield>(b));
+		} else if ("-ajo" == args[i]) {
+			play(alphonse::player<playfield>(a), joni::aiplayer<playfield>(b));
 		} else if ("-n" == args[i]) {
 			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
