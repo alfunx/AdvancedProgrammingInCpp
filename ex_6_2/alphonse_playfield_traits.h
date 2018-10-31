@@ -43,6 +43,37 @@ struct playfield_traits
 		return false;
 	}
 
+	static void insert(const F& field, char rep[F::width][F::height], int x, int p)
+	{
+		if (!column_playable(field, x))
+			return;
+
+		int i = F::height;
+		while (rep[x][--i] != F::none);
+
+		rep[x][i] = p;
+	}
+
+	static void remove(const F& field, char rep[F::width][F::height], int x)
+	{
+		if (!column_playable(field, x))
+			return;
+
+		int i = 0;
+		while (rep[x][++i] == F::none);
+
+		rep[x][i] = F::none;
+	}
+
+	static void copy(const F& field, char rep[F::width][F::height])
+	{
+		for (int j = 0; j < F::height; ++j) {
+			for (int i = 0; i < F::width; ++i) {
+				rep[i][j] = field.stoneat(i, j);
+			}
+		}
+	}
+
 private:
 
 	static bool check_horizontal(const F& field, int x, int y, int p)

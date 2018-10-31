@@ -17,10 +17,7 @@ int playfield::stoneat(int x, int y) const
 
 void playfield::insert(int x, int p)
 {
-	int i = height;
-	while (rep[x][--i] != none);
-
-	rep[x][i] = p;
+	pt::insert(*this, rep, x, p);
 }
 
 void playfield::print() const
