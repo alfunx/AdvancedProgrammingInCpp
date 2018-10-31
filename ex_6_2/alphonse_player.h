@@ -11,15 +11,17 @@ template<typename F>
 class player
 {
 
-	int player_id;
-	typedef alphonse::playfield_traits<F> pt;
+	const static int alpha = -100;
+	const static int beta = 100;
+	const int recursion_depth;
 
-	static const int distribution_factor = 6;
-	std::default_random_engine generator;
-	std::binomial_distribution<int> distribution;
+	const int player_id;
+	int column_order[F::width];
+	typedef alphonse::playfield_traits<F> pt;
 
 	struct internal_playfield
 	{
+
 		const static int width = 7;
 		const static int height = 6;
 		const static int none = 0;
@@ -27,87 +29,116 @@ class player
 		const static int player2 = 2;
 		char rep[F::width][F::height];
 		int stoneat(int x, int y) const { return rep[x][y]; }
+
+		internal_playfield(const F& field) {
+			for (int j = 0; j < height; ++j) {
+				for (int i = 0; i < width; ++i) {
+					rep[i][j] = field.stoneat(i, j);
+				}
+			}
+		}
+
+		int moves() {
+			int m = 0;
+			for (int j = 0; j < height; ++j) {
+				for (int i = 0; i < width; ++i) {
+					if (rep[i][j] != none)
+						++m;
+				}
+			}
+			return m;
+		}
+
 	};
 	typedef alphonse::playfield_traits<internal_playfield> ipt;
 
 public:
 
-	player(int player_id) :
+	player(int player_id, int recursion_depth = 10) :
 		player_id(player_id),
-		distribution((F::width - 1) * distribution_factor, 0.5),
-		generator(time(NULL))
+		recursion_depth(recursion_depth)
 	{
-		/* void */
+		for(int i = 0; i < F::width; i++) {
+			column_order[i] = F::width / 2 + (1 - 2 * (i % 2)) * (i + 1) / 2;
+		}
 	}
 
 	int play(const F& field)
 	{
-		internal_playfield ipf;
-		pt::copy(field, ipf.rep);
+		internal_playfield ipf(field);
 
-		int column = -1;
-
-		// win
-		column = check_win_grid(ipf, player_id);
-		if (column >= 0) return column;
-
-		// prevent oponent win
-		column = check_win_grid(ipf, next_player(player_id));
-		if (column >= 0) return column;
-
-		// random move
-		int enemy_win = 0;
-		int try_guess = distribution_factor * F::width * 2;
-
-		do {
-			do {
-				column = get_random_column();
-				std::cout << ">>> " << column << std::endl;
-			} while (!pt::column_playable(field, column));
-
-			ipt::insert(ipf, ipf.rep, column, player_id);
-			enemy_win = check_win_grid(ipf, next_player(player_id));
-			// std::cout << "enemy: " << enemy_win << std::endl;
-			ipt::remove(ipf, ipf.rep, column);
-		} while (enemy_win > 0 && --try_guess > 0);
-		std::cout << std::endl;
-
-		return column;
-	}
-
-	int get_random_column()
-	{
-		int column;
-		do {
-			column = distribution(generator) - (distribution_factor - 1) * ((F::width - 1) / 2);
-		} while (column < 0 || column >= F::width);
-		return column;
-	}
-
-	int check_win_grid(internal_playfield& ipf, int pid)
-	{
 		for (int i = 0; i < F::width; ++i) {
-			if (check_win_column(ipf, pid, i))
+			if (win_on_column(ipf, player_id, i))
 				return i;
 		}
 
-		return -1;
+		int column = -1;
+		int enemy_score = ipf.width * ipf.height;
+
+		for (int i = 0; i < ipf.width; ++i) {
+			if (!ipt::column_playable(ipf, column_order[i]))
+				continue;
+
+			ipt::insert(ipf, ipf.rep, column_order[i], player_id);
+			int new_score = calculate_score(ipf, alpha, beta, ipt::next_player(player_id), recursion_depth);
+			ipt::remove(ipf, ipf.rep, column_order[i], player_id);
+
+			if (new_score < enemy_score) {
+				enemy_score = new_score;
+				column = column_order[i];
+			}
+		}
+
+		std::cout << "column: " << column << std::endl;
+		return column;
 	}
 
-	bool check_win_column(internal_playfield& ipf, int pid, int x)
+	int calculate_score(internal_playfield& ipf, int a, int b, int p, int depth) const
+	{
+		if (depth == 0)
+			return a;
+
+		if (!ipt::grid_playable(ipf))
+			return 0;
+
+		for (int i = 0; i < F::width; ++i) {
+			if (win_on_column(ipf, p, i))
+				return (ipf.width * ipf.height + 1 - ipf.moves()) / 2;
+		}
+
+		int max = (ipf.width * ipf.height - 1 - ipf.moves()) / 2;
+		if (b > max) {
+			b = max;
+			if (a >= b)
+				return b;
+		}
+
+		for (int i = 0; i < ipf.width; ++i) {
+			if (!ipt::column_playable(ipf, column_order[i]))
+				continue;
+
+			ipt::insert(ipf, ipf.rep, column_order[i], p);
+			int score = - calculate_score(ipf, -b, -a, ipt::next_player(p), depth - 1);
+			ipt::remove(ipf, ipf.rep, column_order[i], p);
+
+			if (score >= b)
+				return score;
+			if (score > a)
+				a = score;
+		}
+
+		return a;
+	}
+
+	static bool win_on_column(internal_playfield& ipf, int p, int x)
 	{
 		if (!ipt::column_playable(ipf, x))
 			return false;
 
-		ipt::insert(ipf, ipf.rep, x, pid);
-		bool win = ipt::has_won(ipf, pid);
-		ipt::remove(ipf, ipf.rep, x);
+		ipt::insert(ipf, ipf.rep, x, p);
+		bool win = ipt::has_won(ipf, p);
+		ipt::remove(ipf, ipf.rep, x, p);
 		return win;
-	}
-
-	int next_player(int current)
-	{
-		return current % pt::max_players + 1;
 	}
 
 };

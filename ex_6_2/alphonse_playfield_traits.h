@@ -48,30 +48,27 @@ struct playfield_traits
 		if (!column_playable(field, x))
 			return;
 
-		int i = F::height;
-		while (rep[x][--i] != F::none);
+		int i = F::height - 1;
+		while (rep[x][i] != F::none) --i;
 
 		rep[x][i] = p;
 	}
 
-	static void remove(const F& field, char rep[F::width][F::height], int x)
+	static void remove(const F& field, char rep[F::width][F::height], int x, int p)
 	{
-		if (!column_playable(field, x))
+		if (rep[x][F::height - 1] == F::none)
 			return;
 
 		int i = 0;
-		while (rep[x][++i] == F::none);
+		while (rep[x][i] == F::none && i < F::height - 1) ++i;
 
-		rep[x][i] = F::none;
+		if (rep[x][i] == p)
+			rep[x][i] = F::none;
 	}
 
-	static void copy(const F& field, char rep[F::width][F::height])
+	static int next_player(int current)
 	{
-		for (int j = 0; j < F::height; ++j) {
-			for (int i = 0; i < F::width; ++i) {
-				rep[i][j] = field.stoneat(i, j);
-			}
-		}
+		return current % max_players + 1;
 	}
 
 private:

@@ -50,7 +50,7 @@ public:
 				break;
 			}
 
-			next_round();
+			current = pt::next_player(current);
 		}
 
 		field.print();
@@ -73,11 +73,6 @@ public:
 			ensure_play(player1, F::player1);
 		else if (current == F::player2)
 			ensure_play(player2, F::player2);
-	}
-
-	void next_round()
-	{
-		current = current % pt::max_players + 1;
 	}
 
 	template<typename T>
