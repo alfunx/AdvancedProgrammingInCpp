@@ -76,7 +76,7 @@ void interactive_mode(rpn_calculator<T>& rpn)
 
 void print_help()
 {
-	cout << "usage: rpn [-d | -f] <persistence-file>" << endl;
+	cout << "usage: rpn [-d | -f | -c] <persistence-file>" << endl;
 }
 
 int main(int argc, char** argv)
