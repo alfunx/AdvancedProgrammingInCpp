@@ -10,15 +10,22 @@ class spellchecker
 {
 
 	pset<string> set;
+	std::set<string> ignored_set;
 
 public:
 
 	spellchecker(string& dict_file);
 
 	void check_file(string& input_file);
-	void check_word(string& word);
-	void replace_word(string& word, string& clean_word, string& prefix, string& suffix);
-	bool contains(string& word) const;
+	void check_line(string& line);
+
+	void correct(string& line, string::iterator& a, string::iterator& b);
+	bool found(string word) const;
+	bool ignored(string word) const;
+	void record(string& word);
+	void ignore(string& word);
+
+	static bool next_word(string::iterator& a, string::iterator& b, const string::iterator& e);
 
 };
 

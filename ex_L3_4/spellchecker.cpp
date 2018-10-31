@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <sstream>
@@ -18,76 +19,99 @@ void spellchecker::check_file(string& input_file)
 	pvector<string> lines(input_file);
 
 	for (string& line : lines) {
-		std::vector<string> words;
-
-		std::istringstream ist(line);
-		string word;
-		while (ist >> word) {
-			words.push_back(word);
-		}
-
-		for (string& w : words) {
-			check_word(w);
-		}
-
-		std::ostringstream ost;
-		std::copy(words.begin(), words.end(), std::ostream_iterator<string>(ost, " "));
-		line = ost.str();
-		line.pop_back();
+		check_line(line);
 	}
 }
 
-void spellchecker::check_word(string& word)
+void spellchecker::check_line(string& line)
 {
-	string::iterator si1 = word.begin();
-	while (si1 < word.end() && !isalpha(*si1)) ++si1;
-	string::iterator si2 = word.end();
-	while (si2 >= word.begin() && !isalpha(*si2)) --si2;
-	string clean_word = string(si1, si2 + 1);
+	string::iterator a = line.begin();
+	string::iterator b = line.begin();
 
-	if (contains(clean_word))
-		return;
+	while (next_word(a, b, line.end())) {
+		string word(a, b);
 
-	char opt;
-	std::cout << "check: " << clean_word << std::endl;
-	std::cout << ">>> (a)dd, (i)gnore, (r)eplace? ";
-	std::cin >> opt;
-	std::cout << std::endl;
+		if (found(word) || ignored(word)) {
+			a = b;
+			continue;
+		}
 
-	switch (opt) {
-		case 'a':
-			set.insert(clean_word);
-			break;
-		case 'r':
-			{
-				string prefix = string(word.begin(), si1);
-				string suffix = string(si2 + 1, word.end());
-				replace_word(word, clean_word, prefix, suffix);
-				check_word(clean_word);
-			}
-			break;
-		case 'i':
-			break;
-		default:
-			std::cout << "Unknown command, ignoring word." << std::endl;
-			std::cout << std::endl;
-			break;
+		char opt;
+		std::cout << "check: " << word << std::endl;
+		std::cout << ">>> (a)dd, (i)gnore, (r)eplace? ";
+		std::cin >> opt;
+		std::cout << std::endl;
+
+		switch (opt) {
+			case 'a':
+				record(word);
+				break;
+			case 'i':
+				ignore(word);
+				break;
+			case 'r':
+				correct(line, a, b);
+				continue;
+			default:
+				std::cout << "Unknown command!" << std::endl;
+				std::cout << std::endl;
+				continue;
+		}
+
+		// check next word
+		a = b;
 	}
 }
 
-void spellchecker::replace_word(string& word, string& clean_word, string& prefix, string& suffix)
+void spellchecker::correct(string& line, string::iterator& a, string::iterator& b)
 {
-	std::cout << "replace: " << clean_word << std::endl;
+	string word;
+	std::cout << "replace: " << string(a, b) << std::endl;
 	std::cout << ">>> ";
-	std::cin >> clean_word;
+	std::cin >> word;
 	std::cout << std::endl;
 
 	std::ostringstream ost;
-	ost << prefix << clean_word << suffix;
-	word = ost.str();
+	ost << string(line.begin(), a) << word << string(b, line.end());
+	line = ost.str();
+
+	a = line.begin();
+	b = line.begin();
 }
 
-bool spellchecker::contains(string& word) const
+bool spellchecker::found(string word) const
 {
+	std::transform(word.begin(), word.end(), word.begin(), tolower);
 	return set.find(word) != set.end();
+}
+
+bool spellchecker::ignored(string word) const
+{
+	std::transform(word.begin(), word.end(), word.begin(), tolower);
+	return ignored_set.find(word) != ignored_set.end();
+}
+
+void spellchecker::record(string& word)
+{
+	set.insert(word);
+}
+
+void spellchecker::ignore(string& word)
+{
+	ignored_set.insert(word);
+}
+
+bool spellchecker::next_word(string::iterator& a, string::iterator& b, const string::iterator& e)
+{
+	// find beginning of word
+	while (a < e && !isalpha(*a)) ++a;
+	b = a;
+
+	// find space (after end of word)
+	while (b < e && !isspace(*b)) ++b;
+
+	// move back to end of word (to avoid special chars)
+	while (b - 1 > a && !isalpha(*(b - 1))) --b;
+
+	return a != e;
 }
