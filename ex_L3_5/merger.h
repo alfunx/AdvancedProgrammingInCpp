@@ -1,9 +1,9 @@
 #ifndef MERGER_H_
 #define MERGER_H_
 
-#include "insert_traits.h"
+#include "merge_traits.h"
 
-template<typename T, typename E, typename I=insert_traits<T, E>>
+template<typename C1, typename C2, typename E, typename M=merge_traits<C1, E>>
 class merger
 {
 
@@ -11,9 +11,9 @@ public:
 
 	merger() = default;
 
-	void operator ()(T& a, T& b) {
+	void operator ()(C1& a, C2& b) {
 		for (auto e : b) {
-			I::insert(a, e);
+			M::merge(a, e);
 		}
 	}
 
