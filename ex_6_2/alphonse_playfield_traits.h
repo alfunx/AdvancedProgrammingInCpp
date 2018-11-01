@@ -1,5 +1,5 @@
-#ifndef PLAYFIELD_TRAITS_H_
-#define PLAYFIELD_TRAITS_H_
+#ifndef ALPHONSE_PLAYFIELD_TRAITS_H_
+#define ALPHONSE_PLAYFIELD_TRAITS_H_
 
 namespace alphonse {
 
@@ -90,4 +90,4 @@ private:
 
 }
 
-#endif  // PLAYFIELD_TRAITS_H_
+#endif  // ALPHONSE_PLAYFIELD_TRAITS_H_

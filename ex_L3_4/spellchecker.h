@@ -1,5 +1,5 @@
-#ifndef DICT_H_
-#define DICT_H_
+#ifndef SPELLCHECKER_H_
+#define SPELLCHECKER_H_
 
 #include <iostream>
 #include <string>
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif  // DICT_H_
+#endif  // SPELLCHECKER_H_
