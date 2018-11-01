@@ -56,14 +56,14 @@ public:
 			std::cout << "It's a draw!" << std::endl;
 			std::cout << "Player "
 				<< field.stone[first]
-				<< " played the first move." << std::endl;
+				<< " had the first move." << std::endl;
 		} else {
 			std::cout << "Player "
 				<< field.stone[current]
 				<< " is the winner!" << std::endl;
 			std::cout << "Player "
 				<< field.stone[first]
-				<< " played the first move." << std::endl;
+				<< " had the first move." << std::endl;
 		}
 	}
 
