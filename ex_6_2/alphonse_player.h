@@ -1,8 +1,6 @@
 #ifndef ALPHONSE_PLAYER_H_
 #define ALPHONSE_PLAYER_H_
 
-#include <iostream>
-#include <random>
 #include "alphonse_playfield_traits.h"
 
 namespace alphonse {
@@ -17,7 +15,6 @@ class player
 
 	const int player_id;
 	int column_order[F::width];
-	typedef alphonse::playfield_traits<F> pt;
 
 	struct internal_playfield
 	{
@@ -30,17 +27,16 @@ class player
 		char rep[F::width][F::height];
 		int stoneat(int x, int y) const { return rep[x][y]; }
 
-		internal_playfield(const F& field) {
-			for (int j = 0; j < height; ++j) {
-				for (int i = 0; i < width; ++i) {
+		internal_playfield(const F& field)
+		{
+			for (int j = 0; j < height; ++j)
+				for (int i = 0; i < width; ++i)
 					rep[i][j] = field.stoneat(i, j);
-				}
-			}
 		}
 
 		void insert(int x, int p)
 		{
-			if (!ipt::column_playable(*this, x))
+			if (!PT::column_playable(*this, x))
 				return;
 
 			int i = height - 1;
@@ -63,28 +59,30 @@ class player
 
 		bool win_on(int x, int p)
 		{
-			if (!ipt::column_playable(*this, x))
+			if (!PT::column_playable(*this, x))
 				return false;
 
 			insert(x, p);
-			bool win = ipt::has_won(*this, p);
+			bool win = PT::has_won(*this, p);
 			remove(x, p);
 			return win;
 		}
 
-		int moves() {
+		int moves()
+		{
 			int m = 0;
-			for (int j = 0; j < height; ++j) {
-				for (int i = 0; i < width; ++i) {
+
+			for (int j = 0; j < height; ++j)
+				for (int i = 0; i < width; ++i)
 					if (rep[i][j] != none)
 						++m;
-				}
-			}
+
 			return m;
 		}
 
 	};
-	typedef alphonse::playfield_traits<internal_playfield> ipt;
+
+	typedef alphonse::playfield_traits<internal_playfield> PT;
 
 public:
 
@@ -92,53 +90,49 @@ public:
 		player_id(player_id),
 		recursion_depth(recursion_depth)
 	{
-		for(int i = 0; i < F::width; i++) {
+		for(int i = 0; i < F::width; i++)
 			column_order[i] = F::width / 2 + (1 - 2 * (i % 2)) * (i + 1) / 2;
-		}
 	}
 
 	int play(const F& field)
 	{
 		internal_playfield ipf(field);
 
-		for (int i = 0; i < F::width; ++i) {
+		for (int i = 0; i < F::width; ++i)
 			if (ipf.win_on(i, player_id))
 				return i;
-		}
 
 		int column = -1;
 		int enemy_score = ipf.width * ipf.height;
 
 		for (int i = 0; i < ipf.width; ++i) {
-			if (!ipt::column_playable(ipf, column_order[i]))
+			if (!PT::column_playable(ipf, column_order[i]))
 				continue;
 
 			ipf.insert(column_order[i], player_id);
-			int new_score = calculate_score(ipf, alpha, beta, ipt::next_player(player_id), recursion_depth);
+			int score = calculate_score(ipf, alpha, beta, PT::next_player(player_id), recursion_depth);
 			ipf.remove(column_order[i], player_id);
 
-			if (new_score < enemy_score) {
-				enemy_score = new_score;
+			if (score < enemy_score) {
+				enemy_score = score;
 				column = column_order[i];
 			}
 		}
 
-		std::cout << "column: " << column << std::endl;
 		return column;
 	}
 
 	int calculate_score(internal_playfield& ipf, int a, int b, int p, int depth) const
 	{
 		if (depth == 0)
-			return a;
-
-		if (!ipt::grid_playable(ipf))
 			return 0;
 
-		for (int i = 0; i < F::width; ++i) {
+		if (!PT::grid_playable(ipf))
+			return 0;
+
+		for (int i = 0; i < F::width; ++i)
 			if (ipf.win_on(i, p))
 				return (ipf.width * ipf.height + 1 - ipf.moves()) / 2;
-		}
 
 		int max = (ipf.width * ipf.height - 1 - ipf.moves()) / 2;
 		if (b > max) {
@@ -148,11 +142,11 @@ public:
 		}
 
 		for (int i = 0; i < ipf.width; ++i) {
-			if (!ipt::column_playable(ipf, column_order[i]))
+			if (!PT::column_playable(ipf, column_order[i]))
 				continue;
 
 			ipf.insert(column_order[i], p);
-			int score = - calculate_score(ipf, -b, -a, ipt::next_player(p), depth - 1);
+			int score = -calculate_score(ipf, -b, -a, PT::next_player(p), depth - 1);
 			ipf.remove(column_order[i], p);
 
 			if (score >= b)

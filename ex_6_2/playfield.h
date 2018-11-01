@@ -12,7 +12,7 @@ class playfield
 
 	const int clear;
 
-	typedef alphonse::playfield_traits<playfield> pt;
+	typedef alphonse::playfield_traits<playfield> PT;
 
 public:
 

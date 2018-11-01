@@ -5,9 +5,8 @@
 #include <string>
 #include <vector>
 #include "alphonse_playfield_traits.h"
-#include "interactive_player.h"
 
-template<typename F, typename P=interactive_player<F>, typename Q=interactive_player<F>>
+template<typename F, typename P, typename Q, typename PT=alphonse::playfield_traits<F>>
 class game
 {
 
@@ -18,8 +17,6 @@ class game
 	char first;
 	char current;
 
-	typedef alphonse::playfield_traits<F> pt;
-
 public:
 
 	game(const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true) :
@@ -28,7 +25,7 @@ public:
 		player2(F::player2)
 	{
 		srand(time(NULL));
-		first = rand() % pt::max_players + 1;
+		first = rand() % PT::max_players + 1;
 		current = first;
 	}
 
@@ -36,7 +33,7 @@ public:
 	{
 		bool draw = true;
 
-		while (pt::grid_playable(field)) {
+		while (PT::grid_playable(field)) {
 			field.print();
 
 			std::cout << "It's player "
@@ -45,18 +42,21 @@ public:
 
 			play_round();
 
-			if (pt::has_won(field, current)) {
+			if (PT::has_won(field, current)) {
 				draw = false;
 				break;
 			}
 
-			current = pt::next_player(current);
+			current = PT::next_player(current);
 		}
 
 		field.print();
 
 		if (draw) {
 			std::cout << "It's a draw!" << std::endl;
+			std::cout << "Player "
+				<< field.stone[first]
+				<< " played the first move." << std::endl;
 		} else {
 			std::cout << "Player "
 				<< field.stone[current]
@@ -81,7 +81,7 @@ public:
 		int column;
 		do {
 			column = t.play(field);
-		} while (!pt::column_playable(field, column));
+		} while (!PT::column_playable(field, column));
 		field.insert(column, p);
 	}
 

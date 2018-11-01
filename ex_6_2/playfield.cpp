@@ -17,7 +17,7 @@ int playfield::stoneat(int x, int y) const
 
 void playfield::insert(int x, int p)
 {
-	if (!pt::column_playable(*this, x))
+	if (!PT::column_playable(*this, x))
 		return;
 
 	int i = height - 1;

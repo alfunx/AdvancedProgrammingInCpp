@@ -4,12 +4,11 @@
 #include <iostream>
 #include "alphonse_playfield_traits.h"
 
-template<typename F>
+template<typename F, typename PT=alphonse::playfield_traits<F>>
 class interactive_player
 {
 
 	int player_id;
-	typedef alphonse::playfield_traits<F> pt;
 
 public:
 
@@ -27,7 +26,7 @@ public:
 			std::cout << ">>> ";
 			std::cin >> column;
 			std::cout << std::endl;
-		} while (!pt::column_playable(field, column));
+		} while (!PT::column_playable(field, column));
 
 		return column;
 	}

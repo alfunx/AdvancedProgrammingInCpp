@@ -1,10 +1,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "game.h"
 #include "playfield.h"
-#include "alphonse_player.h"
+#include "interactive_player.h"
 #include "random_player.h"
+#include "alphonse_player.h"
+
 using namespace std;
 
 void print_help()
@@ -25,13 +28,13 @@ int main(int argc, char** argv)
 
 	for (int i = 1; i < argc; ++i) {
 		if ("-ii" == args[i]) {
-			game<playfield> g(stone, clear);
+			game<playfield, interactive_player<playfield>, interactive_player<playfield>> g(stone, clear);
 			g.play();
 		} else if ("-ri" == args[i]) {
-			game<playfield, random_player<playfield>> g(stone, clear);
+			game<playfield, random_player<playfield>, interactive_player<playfield>> g(stone, clear);
 			g.play();
 		} else if ("-ai" == args[i]) {
-			game<playfield, alphonse::player<playfield>> g(stone, clear);
+			game<playfield, alphonse::player<playfield>, interactive_player<playfield>> g(stone, clear);
 			g.play();
 		} else if ("-ar" == args[i]) {
 			game<playfield, alphonse::player<playfield>, random_player<playfield>> g(stone, clear);
