@@ -43,29 +43,6 @@ struct playfield_traits
 		return false;
 	}
 
-	static void insert(const F& field, char rep[F::width][F::height], int x, int p)
-	{
-		if (!column_playable(field, x))
-			return;
-
-		int i = F::height - 1;
-		while (rep[x][i] != F::none) --i;
-
-		rep[x][i] = p;
-	}
-
-	static void remove(const F& field, char rep[F::width][F::height], int x, int p)
-	{
-		if (rep[x][F::height - 1] == F::none)
-			return;
-
-		int i = 0;
-		while (rep[x][i] == F::none && i < F::height - 1) ++i;
-
-		if (rep[x][i] == p)
-			rep[x][i] = F::none;
-	}
-
 	static int next_player(int current)
 	{
 		return current % max_players + 1;

@@ -9,7 +9,7 @@ using namespace std;
 
 void print_help()
 {
-	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -aa]" << endl;
+	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -ar | -aa]" << endl;
 }
 
 int main(int argc, char** argv)
@@ -32,6 +32,9 @@ int main(int argc, char** argv)
 			g.play();
 		} else if ("-ai" == args[i]) {
 			game<playfield, alphonse::player<playfield>> g(stone, clear);
+			g.play();
+		} else if ("-ar" == args[i]) {
+			game<playfield, alphonse::player<playfield>, random_player<playfield>> g(stone, clear);
 			g.play();
 		} else if ("-aa" == args[i]) {
 			game<playfield, alphonse::player<playfield>, alphonse::player<playfield>> g(stone, clear);

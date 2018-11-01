@@ -22,11 +22,11 @@ class player
 	struct internal_playfield
 	{
 
-		const static int width = 7;
-		const static int height = 6;
-		const static int none = 0;
-		const static int player1 = 1;
-		const static int player2 = 2;
+		const static int width = F::width;
+		const static int height = F::height;
+		const static int none = F::none;
+		const static int player1 = F::player1;
+		const static int player2 = F::player2;
 		char rep[F::width][F::height];
 		int stoneat(int x, int y) const { return rep[x][y]; }
 
@@ -36,6 +36,40 @@ class player
 					rep[i][j] = field.stoneat(i, j);
 				}
 			}
+		}
+
+		void insert(int x, int p)
+		{
+			if (!ipt::column_playable(*this, x))
+				return;
+
+			int i = height - 1;
+			while (rep[x][i] != none) --i;
+
+			rep[x][i] = p;
+		}
+
+		void remove(int x, int p)
+		{
+			if (rep[x][height - 1] == none)
+				return;
+
+			int i = 0;
+			while (rep[x][i] == none && i < height - 1) ++i;
+
+			if (rep[x][i] == p)
+				rep[x][i] = none;
+		}
+
+		bool win_on(int x, int p)
+		{
+			if (!ipt::column_playable(*this, x))
+				return false;
+
+			insert(x, p);
+			bool win = ipt::has_won(*this, p);
+			remove(x, p);
+			return win;
 		}
 
 		int moves() {
@@ -68,7 +102,7 @@ public:
 		internal_playfield ipf(field);
 
 		for (int i = 0; i < F::width; ++i) {
-			if (win_on_column(ipf, player_id, i))
+			if (ipf.win_on(i, player_id))
 				return i;
 		}
 
@@ -79,9 +113,9 @@ public:
 			if (!ipt::column_playable(ipf, column_order[i]))
 				continue;
 
-			ipt::insert(ipf, ipf.rep, column_order[i], player_id);
+			ipf.insert(column_order[i], player_id);
 			int new_score = calculate_score(ipf, alpha, beta, ipt::next_player(player_id), recursion_depth);
-			ipt::remove(ipf, ipf.rep, column_order[i], player_id);
+			ipf.remove(column_order[i], player_id);
 
 			if (new_score < enemy_score) {
 				enemy_score = new_score;
@@ -102,7 +136,7 @@ public:
 			return 0;
 
 		for (int i = 0; i < F::width; ++i) {
-			if (win_on_column(ipf, p, i))
+			if (ipf.win_on(i, p))
 				return (ipf.width * ipf.height + 1 - ipf.moves()) / 2;
 		}
 
@@ -117,9 +151,9 @@ public:
 			if (!ipt::column_playable(ipf, column_order[i]))
 				continue;
 
-			ipt::insert(ipf, ipf.rep, column_order[i], p);
+			ipf.insert(column_order[i], p);
 			int score = - calculate_score(ipf, -b, -a, ipt::next_player(p), depth - 1);
-			ipt::remove(ipf, ipf.rep, column_order[i], p);
+			ipf.remove(column_order[i], p);
 
 			if (score >= b)
 				return score;
@@ -128,17 +162,6 @@ public:
 		}
 
 		return a;
-	}
-
-	static bool win_on_column(internal_playfield& ipf, int p, int x)
-	{
-		if (!ipt::column_playable(ipf, x))
-			return false;
-
-		ipt::insert(ipf, ipf.rep, x, p);
-		bool win = ipt::has_won(ipf, p);
-		ipt::remove(ipf, ipf.rep, x, p);
-		return win;
 	}
 
 };
