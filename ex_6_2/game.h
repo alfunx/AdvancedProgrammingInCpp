@@ -6,23 +6,23 @@
 #include <vector>
 #include "alphonse_playfield_traits.h"
 
-template<typename F, typename P, typename Q, typename PT=alphonse::playfield_traits<F>>
+template<typename F, typename P1, typename P2, typename PT=alphonse::playfield_traits<F>>
 class game
 {
 
 	F field;
-	P player1;
-	Q player2;
+	P1 player1;
+	P2 player2;
 
 	char first;
 	char current;
 
 public:
 
-	game(const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true) :
+	game(P1 a, P2 b, const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true) :
 		field(s, c),
-		player1(F::player1),
-		player2(F::player2)
+		player1(a),
+		player2(b)
 	{
 		srand(time(NULL));
 		first = rand() % PT::max_players + 1;

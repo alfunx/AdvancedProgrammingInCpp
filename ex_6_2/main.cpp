@@ -10,17 +10,27 @@
 
 using namespace std;
 
+const int a = playfield::player1;
+const int b = playfield::player2;
+
+vector<string> stone {" ", "\e[91m●\e[0m", "\e[93m●\e[0m"};
+bool clear = true;
+
 void print_help()
 {
 	cout << "usage: connect4 [-n] [-c] [-ii | -ri | -ai | -ar | -aa]" << endl;
 }
 
+template<typename P1, typename P2>
+void play(P1 a, P2 b)
+{
+	game<playfield, P1, P2> g(a, b, stone, clear);
+	g.play();
+}
+
 int main(int argc, char** argv)
 {
 	vector<string> args(argv, argv + argc);
-	vector<string> stone {" ", "\e[91m●\e[0m", "\e[93m●\e[0m"};
-	bool clear = true;
-
 	if (argc < 2) {
 		print_help();
 		return 1;
@@ -28,22 +38,17 @@ int main(int argc, char** argv)
 
 	for (int i = 1; i < argc; ++i) {
 		if ("-ii" == args[i]) {
-			game<playfield, interactive_player<playfield>, interactive_player<playfield>> g(stone, clear);
-			g.play();
+			play(interactive_player<playfield>(a), interactive_player<playfield>(b));
 		} else if ("-ri" == args[i]) {
-			game<playfield, random_player<playfield>, interactive_player<playfield>> g(stone, clear);
-			g.play();
+			play(random_player<playfield>(a), interactive_player<playfield>(b));
 		} else if ("-ai" == args[i]) {
-			game<playfield, alphonse::player<playfield>, interactive_player<playfield>> g(stone, clear);
-			g.play();
+			play(alphonse::player<playfield>(a), interactive_player<playfield>(b));
 		} else if ("-ar" == args[i]) {
-			game<playfield, alphonse::player<playfield>, random_player<playfield>> g(stone, clear);
-			g.play();
+			play(alphonse::player<playfield>(a), random_player<playfield>(b));
 		} else if ("-aa" == args[i]) {
-			game<playfield, alphonse::player<playfield>, alphonse::player<playfield>> g(stone, clear);
-			g.play();
+			play(alphonse::player<playfield>(a), alphonse::player<playfield>(b));
 		} else if ("-n" == args[i]) {
-			stone = {" ", "1", "2"};
+			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
 			clear = false;
 		} else if ("-h" == args[i]) {
