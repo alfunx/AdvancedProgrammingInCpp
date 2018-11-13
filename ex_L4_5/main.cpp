@@ -11,6 +11,8 @@
 #include "interactive_player.h"
 #include "random_player.h"
 #include "alphonse_player.h"
+#include "janik_player.h"
+#include "thomas_player.h"
 
 using namespace std;
 
@@ -43,6 +45,10 @@ int main(int argc, char** argv)
 			players.push_back(make_shared<random_player>(++player_count));
 		} else if ("-a" == args[i] && player_count < 2) {
 			players.push_back(make_shared<alphonse_player>(++player_count));
+		} else if ("-j" == args[i] && player_count < 2) {
+			players.push_back(make_shared<janik_player>(++player_count));
+		} else if ("-t" == args[i] && player_count < 2) {
+			players.push_back(make_shared<thomas_player>(++player_count, 8));
 		} else if ("-n" == args[i]) {
 			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
