@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+javac \
+    -Xlint:unchecked \
+    -classpath . \
+    -sourcepath . \
+    Main.java
