@@ -114,11 +114,26 @@ int alphonse_player::play(const playfield& field)
 			continue;
 
 		ipf.insert(c , player_id);
-		int score = calculate_score(ipf, alpha, beta, PT::next_player(player_id), recursion_depth);
+
+		int min = -(playfield::width * playfield::height - ipf.moves()) / 2;
+		int max = (playfield::width * playfield::height + 1 - ipf.moves()) / 2;
+		while (min < max) {
+			int med = min + (max - min) / 2;
+			if (med <= 0 && min / 2 < med)
+				med = min / 2;
+			else if (med >= 0 && max / 2 > med)
+				med = max / 2;
+			int r = calculate_score(ipf, med, med + 1, PT::next_player(player_id), recursion_depth);
+			if (r <= med)
+				max = r;
+			else
+				min = r;
+		}
+
 		ipf.remove(c , player_id);
 
-		if (score < enemy_score) {
-			enemy_score = score;
+		if (max < enemy_score) {
+			enemy_score = max;
 			column = c;
 		}
 	}
