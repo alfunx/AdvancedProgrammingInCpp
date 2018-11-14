@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+
 #include "playfield.h"
 #include "alphonse_playfield_traits.h"
 

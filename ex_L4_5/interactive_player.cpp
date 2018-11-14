@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "interactive_player.h"
 
 interactive_player::interactive_player(int player_id) :

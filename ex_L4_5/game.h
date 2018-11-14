@@ -2,8 +2,10 @@
 #define GAME_H_
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "playfield.h"
 #include "alphonse_playfield.h"
 #include "player.h"
@@ -14,16 +16,16 @@ typedef alphonse::playfield_traits<playfield> PT;
 class game
 {
 
-	alphonse_playfield* field;
-	player* player1;
-	player* player2;
+	std::shared_ptr<alphonse_playfield> field;
+	std::shared_ptr<player> player1;
+	std::shared_ptr<player> player2;
 
 	char first;
 	char current;
 
 public:
 
-	game(alphonse_playfield* f, player* a, player* b)
+	game(std::shared_ptr<alphonse_playfield> f, std::shared_ptr<player> a, std::shared_ptr<player> b)
 	{
 		field = f;
 		player1 = a;
@@ -80,7 +82,7 @@ public:
 			ensure_play(player2, playfield::player2);
 	}
 
-	void ensure_play(player* player, int p)
+	void ensure_play(std::shared_ptr<player> player, int p)
 	{
 		int column;
 		do {

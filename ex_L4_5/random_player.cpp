@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "random_player.h"
 
 random_player::random_player(int player_id) :

@@ -1,10 +1,12 @@
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "game.h"
 #include "playfield.h"
 #include "alphonse_playfield.h"
+
 #include "player.h"
 #include "interactive_player.h"
 #include "random_player.h"
@@ -31,16 +33,16 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	vector<player*> players;
+	vector<shared_ptr<player>> players;
 	int player_count = 0;
 
 	for (int i = 1; i < argc; ++i) {
 		if ("-i" == args[i] && player_count < 2) {
-			players.push_back(new interactive_player(++player_count));
+			players.push_back(make_shared<interactive_player>(++player_count));
 		} else if ("-r" == args[i] && player_count < 2) {
-			players.push_back(new random_player(++player_count));
+			players.push_back(make_shared<random_player>(++player_count));
 		} else if ("-a" == args[i] && player_count < 2) {
-			players.push_back(new alphonse_player(++player_count));
+			players.push_back(make_shared<alphonse_player>(++player_count));
 		} else if ("-n" == args[i]) {
 			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
@@ -54,13 +56,9 @@ int main(int argc, char** argv)
 		}
 	}
 
-	alphonse_playfield* field = new alphonse_playfield(stone, clear);
+	auto field = make_shared<alphonse_playfield>(stone, clear);
 	game g(field, players[0], players[1]);
 	g.play();
-
-	for (auto p : players)
-		delete p;
-	delete field;
 
 	return 0;
 }
