@@ -86,6 +86,7 @@ int alphonse_player::play(const playfield& field)
 		if (ipf.win_on(i, player_id))
 			return i;
 
+	++recursion_depth;
 	int column = -1;
 	int enemy_score = ipf.width * ipf.height;
 

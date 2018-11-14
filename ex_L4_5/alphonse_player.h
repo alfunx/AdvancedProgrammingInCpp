@@ -12,8 +12,8 @@ class alphonse_player : public player
 
 	const static int alpha = -100;
 	const static int beta = 100;
-	const int recursion_depth;
 	const int player_id;
+	int recursion_depth;
 
 	struct internal_playfield;
 
@@ -21,7 +21,7 @@ class alphonse_player : public player
 
 public:
 
-	alphonse_player(int player_id, int recursion_depth = 10);
+	alphonse_player(int player_id, int recursion_depth = 9);
 	virtual ~alphonse_player();
 	virtual int play(const playfield& field);
 	static int calculate_score(internal_playfield& ipf, int a, int b, int p, int d);
