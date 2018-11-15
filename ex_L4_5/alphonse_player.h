@@ -10,8 +10,8 @@ typedef alphonse::playfield_traits<playfield> PT;
 class alphonse_player : public player
 {
 
-	const static int alpha = -100;
-	const static int beta = 100;
+	const static int alpha = -playfield::width * playfield::height / 2;
+	const static int beta = playfield::width * playfield::height / 2;
 	const int player_id;
 	int recursion_depth;
 
@@ -21,7 +21,7 @@ class alphonse_player : public player
 
 public:
 
-	alphonse_player(int player_id, int recursion_depth = 9);
+	alphonse_player(int player_id, int recursion_depth = 10);
 	virtual ~alphonse_player();
 	virtual int play(const playfield& field);
 	static int calculate_score(internal_playfield& ipf, int a, int b, int p, int d);
