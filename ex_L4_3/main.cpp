@@ -1,12 +1,18 @@
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <list>
 #include <string>
 #include <vector>
 #include <set>
-#include "merger.h"
 
 using namespace std;
-using namespace merger;
+
+template<typename A, typename B, typename I>
+void merge(A& a, B& b, I i)
+{
+	std::merge(a.begin(), a.end(), b.begin(), b.end(), i);
+}
 
 void print_help()
 {
@@ -39,47 +45,56 @@ int main(int argc, char** argv)
 	for (int i = 1; i < argc; i++) {
 		if ("-vv" == args[i]) {
 
-			merge<int>(v1, v2);
-			print(v1);
+			vector<int> dst;
+			merge(v1, v2, back_inserter(dst));
+			print(dst);
 
 		} else if ("-ss" == args[i]) {
 
-			merge<int>(s1, s2);
+			set<int> dst;
+			merge(s1, s2, inserter(dst, dst.begin()));
 			print(s1);
 
 		} else if ("-ll" == args[i]) {
 
-			merge<int>(l1, l2);
+			list<int> dst;
+			merge(l1, l2, back_inserter(dst));
 			print(l1);
 
 		} else if ("-vl" == args[i]) {
 
-			merge<int>(v1, l2);
+			vector<int> dst;
+			merge(v1, l2, back_inserter(dst));
 			print(v1);
 
 		} else if ("-vs" == args[i]) {
 
-			merge<int>(v1, s2);
+			vector<int> dst;
+			merge(v1, s2, back_inserter(dst));
 			print(v1);
 
 		} else if ("-sl" == args[i]) {
 
-			merge<int>(s1, l2);
+			set<int> dst;
+			merge(s1, l2, inserter(dst, dst.begin()));
 			print(s1);
 
 		} else if ("-sv" == args[i]) {
 
-			merge<int>(s1, v2);
+			set<int> dst;
+			merge(s1, v2, inserter(dst, dst.begin()));
 			print(s1);
 
 		} else if ("-lv" == args[i]) {
 
-			merge<int>(l1, v2);
+			list<int> dst;
+			merge(l1, v2, back_inserter(dst));
 			print(l1);
 
 		} else if ("-ls" == args[i]) {
 
-			merge<int>(l1, s2);
+			list<int> dst;
+			merge(l1, s2, back_inserter(dst));
 			print(l1);
 
 		} else if ("-h" == args[i]) {
