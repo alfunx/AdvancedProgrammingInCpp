@@ -23,7 +23,7 @@ void ptr_stack_pop(stack* s)
 
 void print_help()
 {
-	cout << "usage: stack " << endl;
+	cout << "usage: stack [-c] [-r] [-p]" << endl;
 }
 
 int main(int argc, char** argv)
