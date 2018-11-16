@@ -1,13 +1,12 @@
-#include <array>
-
 #include "alphonse_player.h"
 
 struct alphonse_player::internal_playfield : public playfield
 {
+
 	static const int min_score = -(width * height) / 2 + 3;
 	static const int max_score = (width * height + 1) / 2 - 3;
 
-	std::array<char, width * height> rep;
+	char rep[width * height];
 	int stoneat(int x, int y) const { return rep[x + width * y]; }
 
 	internal_playfield(const playfield& field)
@@ -90,6 +89,7 @@ int alphonse_player::play(const playfield& field)
 		if (ipf.win_on(i, player_id))
 			return i;
 
+	// heuristic
 	if (ipf.moves() > playfield::height)
 		++recursion_depth;
 

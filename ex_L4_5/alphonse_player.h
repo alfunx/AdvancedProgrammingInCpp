@@ -16,16 +16,16 @@ class alphonse_player : public player
 	int recursion_depth;
 
 	struct internal_playfield;
-
 	typedef alphonse::playfield_traits<internal_playfield> PT;
+
+	int calculate_score(internal_playfield& ipf, int a, int b, int p, int d);
+	int get_center_column(int i);
 
 public:
 
 	alphonse_player(int player_id, int recursion_depth = 10);
 	virtual ~alphonse_player();
 	virtual int play(const playfield& field);
-	static int calculate_score(internal_playfield& ipf, int a, int b, int p, int d);
-	static int get_center_column(int i);
 
 };
 
