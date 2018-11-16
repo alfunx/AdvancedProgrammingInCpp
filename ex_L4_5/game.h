@@ -57,6 +57,11 @@ public:
 			current = PT::next_player(current);
 		}
 
+		// print with last move
+		field->print();
+
+		// print final board
+		field->finalize();
 		field->print();
 
 		if (draw) {

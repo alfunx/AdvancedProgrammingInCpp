@@ -7,7 +7,8 @@
 
 alphonse_playfield::alphonse_playfield(const std::vector<std::string>& s, bool c) :
 	stone(s),
-	clear(c)
+	clear(c),
+	last_move(-1)
 {
 	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
 }
@@ -22,6 +23,16 @@ int alphonse_playfield::stoneat(int x, int y) const
 	return rep[x][y];
 }
 
+int alphonse_playfield::stoneat_format(int x, int y) const
+{
+
+	if (x == last_move && rep[x][y] != none &&
+			(y - 1 < 0 || rep[x][y - 1] == none))
+		return rep[x][y] + 2;
+
+	return rep[x][y];
+}
+
 void alphonse_playfield::insert(int x, int p)
 {
 	if (!PT::column_playable(*this, x))
@@ -30,7 +41,13 @@ void alphonse_playfield::insert(int x, int p)
 	int i = height - 1;
 	while (rep[x][i] != none) --i;
 
+	last_move = x;
 	rep[x][i] = p;
+}
+
+void alphonse_playfield::finalize()
+{
+	last_move = -1;
 }
 
 void alphonse_playfield::print() const
@@ -65,7 +82,7 @@ void alphonse_playfield::print_grid() const
 		print_indent();
 
 		for (int i = 0; i < width; ++i) {
-			std::cout << "│ " << stone[rep[i][j]] << " ";
+			std::cout << "│ " << stone[stoneat_format(i, j)] << " ";
 		}
 		std::cout << "│" << std::endl;
 

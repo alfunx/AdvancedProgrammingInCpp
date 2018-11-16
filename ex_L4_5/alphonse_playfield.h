@@ -13,6 +13,7 @@ class alphonse_playfield : public playfield
 	const static int indent = 4;
 	const int clear;
 	typedef alphonse::playfield_traits<playfield> PT;
+	int last_move;
 
 public:
 
@@ -24,11 +25,13 @@ protected:
 
 public:
 
-	alphonse_playfield(const std::vector<std::string>& s = {" ", "1", "2"}, bool c = true);
+	alphonse_playfield(const std::vector<std::string>& s = {" ", "1", "2", "1", "2"}, bool c = true);
 	~alphonse_playfield();
 	virtual int stoneat(int x, int y) const;
+	virtual int stoneat_format(int x, int y) const;
 	virtual void insert(int x, int p);
 	virtual void print() const;
+	virtual void finalize();
 
 private:
 

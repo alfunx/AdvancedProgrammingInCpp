@@ -17,7 +17,7 @@ using namespace std;
 const int a = playfield::player1;
 const int b = playfield::player2;
 
-vector<string> stone {" ", "\e[91m●\e[0m", "\e[93m●\e[0m"};
+vector<string> stone {" ", "\e[91m●\e[0m", "\e[93m●\e[0m", "\e[91m○\e[0m", "\e[93m○\e[0m"};
 bool clear = true;
 
 void print_help()
