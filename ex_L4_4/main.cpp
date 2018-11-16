@@ -8,16 +8,19 @@ using namespace std;
 
 void copy_stack_pop(stack s)
 {
+	cout << ">>> passed by value" << endl;
 	cout << s.pop() << endl;
 }
 
 void ref_stack_pop(stack& s)
 {
+	cout << ">>> passed by reference" << endl;
 	cout << s.pop() << endl;
 }
 
 void ptr_stack_pop(stack* s)
 {
+	cout << ">>> passed a pointer" << endl;
 	cout << s->pop() << endl;
 }
 
