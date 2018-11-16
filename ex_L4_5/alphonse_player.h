@@ -1,6 +1,8 @@
 #ifndef ALPHONSE_PLAYER_H_
 #define ALPHONSE_PLAYER_H_
 
+#include <unordered_map>
+
 #include "playfield.h"
 #include "player.h"
 #include "alphonse_playfield_traits.h"
@@ -17,13 +19,14 @@ class alphonse_player : public player
 
 	struct internal_playfield;
 	typedef alphonse::playfield_traits<internal_playfield> PT;
+	std::unordered_map<std::string, int> transposition;
 
 	int calculate_score(internal_playfield& ipf, int a, int b, int p, int d);
 	int get_center_column(int i);
 
 public:
 
-	alphonse_player(int player_id, int recursion_depth = 10);
+	alphonse_player(int player_id, int recursion_depth = 12);
 	virtual ~alphonse_player();
 	virtual int play(const playfield& field);
 

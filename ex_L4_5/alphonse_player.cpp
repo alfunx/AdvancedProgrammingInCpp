@@ -67,6 +67,14 @@ struct alphonse_player::internal_playfield : public playfield
 		return m;
 	}
 
+	std::string to_string()
+	{
+		std::string str;
+		for(int i = 0; i < sizeof(rep); ++i)
+			str.push_back('0' + rep[i]);
+		return str;
+	}
+
 };
 
 alphonse_player::alphonse_player(int player_id, int recursion_depth) :
@@ -95,6 +103,9 @@ int alphonse_player::play(const playfield& field)
 
 	int column = -1;
 	int enemy_score = ipf.width * ipf.height;
+
+	// because of upper limit of search depth
+	transposition.clear();
 
 	for (int i = 0; i < ipf.width; ++i) {
 		int c = get_center_column(i);
@@ -128,6 +139,11 @@ int alphonse_player::calculate_score(internal_playfield& ipf, int a, int b, int 
 			return (ipf.width * ipf.height + 1 - ipf.moves()) / 2;
 
 	int max = (ipf.width * ipf.height - 1 - ipf.moves()) / 2;
+
+	auto it = transposition.find(ipf.to_string());
+	if (it != transposition.end())
+		max = it->second + internal_playfield::min_score - 1;
+
 	if (b > max) {
 		b = max;
 		if (a >= b)
@@ -150,6 +166,7 @@ int alphonse_player::calculate_score(internal_playfield& ipf, int a, int b, int 
 			a = score;
 	}
 
+	transposition.insert(std::pair(ipf.to_string(), a - internal_playfield::min_score + 1));
 	return a;
 }
 
