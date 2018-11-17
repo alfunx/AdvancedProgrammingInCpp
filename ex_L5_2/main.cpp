@@ -4,13 +4,9 @@
 #include <vector>
 
 #include "game.h"
-#include "playfield.h"
 #include "alphonse_playfield.h"
-
 #include "player.h"
-#include "interactive_player.h"
-#include "random_player.h"
-#include "alphonse_player.h"
+#include "player_factory.h"
 
 using namespace std;
 
@@ -28,7 +24,7 @@ void print_help()
 int main(int argc, char** argv)
 {
 	vector<string> args(argv, argv + argc);
-	if (argc < 2) {
+	if (argc < 3) {
 		print_help();
 		return 1;
 	}
@@ -38,11 +34,11 @@ int main(int argc, char** argv)
 
 	for (int i = 1; i < argc; ++i) {
 		if ("-i" == args[i] && player_count < 2) {
-			players.push_back(make_shared<interactive_player>(++player_count));
+			players.push_back(player_factory::make("interactive", ++player_count));
 		} else if ("-r" == args[i] && player_count < 2) {
-			players.push_back(make_shared<random_player>(++player_count));
+			players.push_back(player_factory::make("random", ++player_count));
 		} else if ("-a" == args[i] && player_count < 2) {
-			players.push_back(make_shared<alphonse_player>(++player_count));
+			players.push_back(player_factory::make("alphonse", ++player_count));
 		} else if ("-n" == args[i]) {
 			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
@@ -54,6 +50,11 @@ int main(int argc, char** argv)
 			print_help();
 			return 1;
 		}
+	}
+
+	if (player_count < 2) {
+		print_help();
+		return 1;
 	}
 
 	auto field = make_shared<alphonse_playfield>(stone, clear);
