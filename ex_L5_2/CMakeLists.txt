@@ -12,6 +12,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include_directories(
     .
+    players/dominik
+    players/janik
+    players/thomas
 )
 
 set(SOURCES
@@ -22,6 +25,7 @@ set(SOURCES
     interactive_player.cpp
     random_player.cpp
     alphonse_player.cpp
+    players/dominik/dominik_player.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -18,7 +18,7 @@ bool clear = true;
 
 void print_help()
 {
-	cout << "usage: connect4 [-n] [-c] [-i | -r | -a]" << endl;
+	cout << "usage: connect4 [-n] [-c] [-i | -r | -a | -d | -j | -t]" << endl;
 }
 
 int main(int argc, char** argv)
@@ -39,6 +39,12 @@ int main(int argc, char** argv)
 			players.push_back(player_factory::make("random", ++player_count));
 		} else if ("-a" == args[i] && player_count < 2) {
 			players.push_back(player_factory::make("alphonse", ++player_count));
+		} else if ("-d" == args[i] && player_count < 2) {
+			players.push_back(player_factory::make("dominik", ++player_count));
+		} else if ("-j" == args[i] && player_count < 2) {
+			players.push_back(player_factory::make("janik", ++player_count));
+		} else if ("-t" == args[i] && player_count < 2) {
+			players.push_back(player_factory::make("thomas", ++player_count));
 		} else if ("-n" == args[i]) {
 			stone = {" ", to_string(a), to_string(b)};
 		} else if ("-c" == args[i]) {
