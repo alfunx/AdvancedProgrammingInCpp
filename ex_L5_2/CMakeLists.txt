@@ -18,6 +18,7 @@ set(SOURCES
     main.cpp
     alphonse_playfield.cpp
     player_factory.cpp
+    game.cpp
     interactive_player.cpp
     random_player.cpp
     alphonse_player.cpp
