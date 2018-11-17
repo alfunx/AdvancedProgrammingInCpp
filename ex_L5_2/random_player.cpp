@@ -23,3 +23,13 @@ int random_player::play(const playfield& field)
 
 	return column;
 }
+
+std::shared_ptr<player> random_player::make(const std::string& name, int id)
+{
+	if (name != "random")
+		return NULL;
+
+	return std::make_shared<random_player>(id);
+}
+
+static player_factory_helper<random_player> register_interactive_player;

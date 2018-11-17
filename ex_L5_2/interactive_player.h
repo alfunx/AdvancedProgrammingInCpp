@@ -3,6 +3,7 @@
 
 #include "playfield.h"
 #include "player.h"
+#include "player_factory.h"
 #include "alphonse_playfield_traits.h"
 
 typedef alphonse::playfield_traits<playfield> PT;
@@ -17,6 +18,8 @@ public:
 	interactive_player(int player_id);
 	virtual ~interactive_player();
 	virtual int play(const playfield& field);
+
+	static std::shared_ptr<player> make(const std::string& name, int id);
 
 };
 

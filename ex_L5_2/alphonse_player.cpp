@@ -157,3 +157,13 @@ int alphonse_player::get_center_column(int i)
 {
 	return playfield::width / 2 + (1 - 2 * (i % 2)) * (i + 1) / 2;
 }
+
+std::shared_ptr<player> alphonse_player::make(const std::string& name, int id)
+{
+	if (name != "alphonse")
+		return NULL;
+
+	return std::make_shared<alphonse_player>(id);
+}
+
+static player_factory_helper<alphonse_player> register_interactive_player;

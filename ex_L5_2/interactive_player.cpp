@@ -25,3 +25,13 @@ int interactive_player::play(const playfield& field)
 
 	return column;
 }
+
+std::shared_ptr<player> interactive_player::make(const std::string& name, int id)
+{
+	if (name != "interactive")
+		return NULL;
+
+	return std::make_shared<interactive_player>(id);
+}
+
+static player_factory_helper<interactive_player> register_interactive_player;
