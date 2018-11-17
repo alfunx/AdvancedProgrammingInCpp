@@ -6,9 +6,9 @@
 #include "alphonse_playfield.h"
 
 alphonse_playfield::alphonse_playfield(const std::vector<std::string>& s, bool c) :
-	stone(s),
 	clear(c),
-	last_move(-1)
+	last_move(-1),
+	stone(s)
 {
 	std::fill(&rep[0][0], &rep[0][0] + width * height, (int)none);
 }
