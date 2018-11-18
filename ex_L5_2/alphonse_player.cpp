@@ -1,19 +1,40 @@
 #include "alphonse_player.h"
 
+#include <iostream>
+using namespace std;
 struct alphonse_player::internal_playfield : public playfield
 {
 
 	static const int min_score = -(width * height) / 2 + 3;
 	static const int max_score = (width * height + 1) / 2 - 3;
 
-	char rep[width * height];
-	int stoneat(int x, int y) const { return rep[x + width * y]; }
+	unsigned long long rep;
+	unsigned long long occ;
 
-	internal_playfield(const playfield& field)
+	int stoneat(int x, int y) const {
+		if (((occ >> (x + width * y)) & 1U) == 0U)
+			return none;
+		if (((rep >> (x + width * y)) & 1U) == 1U)
+			return player1;
+		else
+			return player2;
+	}
+
+	internal_playfield(const playfield& field) :
+		rep(0), occ(0)
 	{
-		for (int j = 0; j < height; ++j)
-			for (int i = 0; i < width; ++i)
-				rep[i + width * j] = field.stoneat(i, j);
+		for (int j = 0; j < height; ++j) {
+			for (int i = 0; i < width; ++i) {
+				int x = field.stoneat(i, j);
+				if (x != none)
+					occ |= 1ULL << (i + width * j);
+				if (x == player1)
+					rep |= 1ULL << (i + width * j);
+			}
+		}
+
+		cout << "rep:" << rep << endl;
+		cout << "occ:" << occ << endl;
 	}
 
 	virtual ~internal_playfield()
@@ -27,21 +48,27 @@ struct alphonse_player::internal_playfield : public playfield
 			return;
 
 		int i = height - 1;
-		while (rep[x + width * i] != none) --i;
+		while (i > 0 && ((occ >> (x + width * i)) & 1U) != 0U) --i;
 
-		rep[x + width * i] = p;
+		occ |= 1ULL << (x + width * i);
+		if (p == player1)
+			rep |= 1ULL << (x + width * i);
 	}
 
 	void remove(int x, int p)
 	{
-		if (rep[x + width * (height - 1)] == none)
+		if (((occ >> (x + width * (height - 1))) & 1U) == 0U)
 			return;
 
 		int i = 0;
-		while (rep[x + width * i] == none && i < height - 1) ++i;
+		while (i < height - 1 && ((occ >> (x + width * i)) & 1U) == 0U) ++i;
 
-		if (rep[x + width * i] == p)
-			rep[x + width * i] = none;
+		if (((occ >> (x + width * i)) & 1U) == 1U) {
+			if ((p == player1 && ((rep >> (x + width * i)) & 1U) == 1) || p == player2) {
+				occ &= ~(1ULL << (x + width * i));
+				rep &= ~(1ULL << (x + width * i));
+			}
+		}
 	}
 
 	bool win_on(int x, int p)
@@ -61,7 +88,7 @@ struct alphonse_player::internal_playfield : public playfield
 
 		for (int j = 0; j < height; ++j)
 			for (int i = 0; i < width; ++i)
-				if (rep[i + width * j] != none)
+				if (((occ >> (i + width * j)) & 1U) != 0U)
 					++m;
 
 		return m;
