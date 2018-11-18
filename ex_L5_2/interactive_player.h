@@ -19,7 +19,7 @@ public:
 	virtual ~interactive_player();
 	virtual int play(const playfield& field);
 
-	static std::shared_ptr<player> make(const std::string& name, int id);
+	static std::shared_ptr<player> make(int id);
 
 };
 

@@ -1,20 +1,18 @@
 #include "player_factory.h"
 
-std::list<make_type*> player_factory::make_functions;
+std::map<std::string, make_type*> player_factory::make_functions;
 
-void player_factory::add(make_type* m)
+void player_factory::add(std::string name, make_type* function)
 {
-	make_functions.push_back(m);
+	make_functions[name] = function;
 }
 
 std::shared_ptr<player> player_factory::make(const std::string name, int id)
 {
-	for (auto make : make_functions) {
-		auto player = make(name, id);
+	auto make = make_functions[name];
 
-		if (player)
-			return player;
-	}
+	if (!make)
+		return NULL;
 
-	return NULL;
+	return make(id);
 }

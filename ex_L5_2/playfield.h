@@ -18,7 +18,7 @@ public:
 		/* void */
 	};
 
-	virtual int stoneat(int x, int y) const =0;
+	virtual int stoneat(int x, int y) const = 0;
 
 };
 

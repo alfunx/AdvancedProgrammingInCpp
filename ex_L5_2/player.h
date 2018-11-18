@@ -13,7 +13,7 @@ public:
 		/* void */
 	};
 
-	virtual int play(const playfield& field) =0;
+	virtual int play(const playfield& field) = 0;
 
 };
 
