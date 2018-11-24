@@ -8,47 +8,26 @@ void print_help()
 	cout << "usage: inheritance [foo | bar | baz | foobar | barfoo | diamond]" << endl;
 }
 
-struct foo
-{
-	foo() { cout << "foo()" << endl; }
-	~foo() { cout << "~foo()" << endl; }
-};
+#define GEN(NAME, ...) \
+	struct NAME __VA_OPT__(: public __VA_ARGS__) \
+	{ \
+		NAME() { cout << #NAME "()" << endl; } \
+		~NAME() { cout << "~" #NAME "()" << endl; } \
+	};
 
-struct bar
-{
-	bar() { cout << "bar()" << endl; }
-	~bar() { cout << "~bar()" << endl; }
-};
+GEN(foo);
+GEN(bar);
 
-struct baz : public foo
-{
-	baz() { cout << "baz()" << endl; }
-	~baz() { cout << "~baz()" << endl; }
-};
+GEN(baz, foo);
+GEN(baaz, foo);
 
-struct foobar : public foo, bar
-{
-	foobar() { cout << "foobar()" << endl; }
-	~foobar() { cout << "~foobar()" << endl; }
-};
+GEN(foobar, foo, bar);
+GEN(barfoo, bar, foo);
 
-struct barfoo : public bar, foo
-{
-	barfoo() { cout << "barfoo()" << endl; }
-	~barfoo() { cout << "~barfoo()" << endl; }
-};
+GEN(barbaz, bar, baz);
+GEN(bazbar, baz, bar);
 
-struct baaz : public foo
-{
-	baaz() { cout << "baaz()" << endl; }
-	~baaz() { cout << "~baaz()" << endl; }
-};
-
-struct diamond : public baz, baaz
-{
-	diamond() { cout << "diamond()" << endl; }
-	~diamond() { cout << "~diamond()" << endl; }
-};
+GEN(diamond, baz, baaz);
 
 int main(int argc, char** argv)
 {
@@ -70,6 +49,10 @@ int main(int argc, char** argv)
 			foobar x;
 		} else if ("barfoo" == args[i]) {
 			barfoo x;
+		} else if ("barbaz" == args[i]) {
+			barbaz x;
+		} else if ("bazbar" == args[i]) {
+			bazbar x;
 		} else if ("diamond" == args[i]) {
 			diamond x;
 		} else if ("-h" == args[i]) {
