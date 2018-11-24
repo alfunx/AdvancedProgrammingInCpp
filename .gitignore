@@ -33,7 +33,7 @@
 *.app
 
 # cmake
-build
+build/
 compile_commands.json
 
 # java

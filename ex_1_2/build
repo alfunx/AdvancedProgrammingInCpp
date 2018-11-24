@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+source_files=(
+    main.cpp
+)
+
+g++ -S -O0 \
+    "${source_files[@]}" \
+    -o inline_O0.s
+
+g++ -S -O3 \
+    "${source_files[@]}" \
+    -o inline_O3.s
