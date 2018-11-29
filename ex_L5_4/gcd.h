@@ -7,7 +7,7 @@ namespace template_
 	template<int A, int B>
 	struct gcd
 	{
-		static const int res = (B == 0) ? A : gcd<B, A % B>::res;
+		static const int res = gcd<B, A % B>::res;
 	};
 
 	template<int A>
