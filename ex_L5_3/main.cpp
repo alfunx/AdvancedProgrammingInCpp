@@ -5,7 +5,7 @@ using namespace std;
 
 void print_help()
 {
-	cout << "usage: inheritance [foo | bar | baz | foobar | barfoo | diamond]" << endl;
+	cout << "usage: inheritance [foo | bar | baz | foobar | barfoo | diamond | tree]" << endl;
 }
 
 #define GEN(NAME, ...) \
@@ -13,7 +13,7 @@ void print_help()
 	{ \
 		NAME() { cout << #NAME "()" << endl; } \
 		~NAME() { cout << "~" #NAME "()" << endl; } \
-	};
+	}
 
 GEN(foo);
 GEN(bar);
@@ -28,6 +28,37 @@ GEN(barbaz, bar, baz);
 GEN(bazbar, baz, bar);
 
 GEN(diamond, baz, baaz);
+
+/*  inheritance tree:
+ *
+ *                            f
+ *                            |
+ *                    -----------------
+ *                   /                 \
+ *                  b                   g
+ *                  |                   |
+ *              ---------               -----
+ *             /         \                   \
+ *            a           d                   i
+ *                        |                   |
+ *                    ---------            ----
+ *                   /         \          /
+ *                  c           e        h
+ *
+ *  post-order tree traversal:
+ *  a, c, e, d, b, h, i, g, f
+ *
+ */
+
+GEN(h);
+GEN(i, h);
+GEN(g, i);
+GEN(e);
+GEN(c);
+GEN(d, c, e);
+GEN(a);
+GEN(b, a, d);
+GEN(f, b, g);
 
 int main(int argc, char** argv)
 {
@@ -55,6 +86,8 @@ int main(int argc, char** argv)
 			bazbar x;
 		} else if ("diamond" == args[i]) {
 			diamond x;
+		} else if ("tree" == args[i]) {
+			f x;
 		} else if ("-h" == args[i]) {
 			print_help();
 			return 0;
