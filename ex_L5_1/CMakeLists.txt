@@ -17,6 +17,7 @@ include_directories(
 
 set(SOURCES
     main.cpp
+    file_locker.cpp
     ../ex_1_1/fraction.cpp
 )
 

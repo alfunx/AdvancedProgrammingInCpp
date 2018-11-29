@@ -12,21 +12,9 @@ class file_locker
 
 public:
 
-	file_locker(const std::string& file) : file(file)
-	{
-		fd = open(file.c_str(), O_RDWR);
-		flock(fd, LOCK_EX);
-	}
-
-	~file_locker()
-	{
-		flock(fd, LOCK_UN);
-	}
-
-	std::string path() const
-	{
-		return file;
-	}
+	file_locker(const std::string& file);
+	~file_locker();
+	std::string path() const;
 
 };
 
