@@ -19,9 +19,9 @@ struct is_even : std::unary_function<int, bool>
 	    bool operator ()(int i) const { return i % 2 == 0; }
 };
 
-struct is_both : std::binary_function<int, int, bool>
+struct is_both : std::binary_function<bool, bool, bool>
 {
-	    bool operator ()(int i, int j) const { return i && j; }
+	    bool operator ()(bool i, bool j) const { return i && j; }
 };
 
 int main(int argc, char** argv)
