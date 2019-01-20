@@ -86,16 +86,6 @@ int fraction::get_denominator() const
 	return d;
 }
 
-fraction::operator double() const
-{
-	return (double)c / d;
-}
-
-fraction::operator float() const
-{
-	return (float)c / d;
-}
-
 fraction fraction::operator +(const fraction f) const
 {
 	int dnm = lcm(d, f.d);

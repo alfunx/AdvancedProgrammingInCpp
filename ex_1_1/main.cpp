@@ -27,6 +27,8 @@ void static_test()
 	cout << f << " > " << g << " = " << (f > g) << endl;
 
 	cout << f << " = " << (double)f << endl;
+	cout << f << " = " << (float)f << endl;
+	cout << f << " = " << (int)f << endl;
 }
 
 void interactive_test()

@@ -22,8 +22,11 @@ public:
 	int get_counter() const;
 	int get_denominator() const;
 
-	operator double() const;
-	operator float() const;
+	template<typename T>
+	operator T() const
+	{
+		return (T)c / d;
+	}
 
 	fraction operator +(const fraction f) const;
 	fraction operator -(const fraction f) const;
